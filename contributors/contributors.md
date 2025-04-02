@@ -1,16 +1,15 @@
 ---
 layout: page
-title: Our Team
+title:
 permalink: /contributors/
 ---
 
-<h1>Project Contributors</h1>
+<h1><strong>Project Contributors</strong></h1>
 
 <!-- Team Member 1 (ALEX) -->
-<h2>Alexander Dyakin</h2>
+<h4>Alexander Dyakin</h4>
 <ul>
-  <li><strong>Role:</strong> Awesome Sauce</li>
-  <li><strong>Contributions:</strong>
+  <li>Contributions:
     <ul>
       <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/6">Database and login</a></li>
       <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/work_items/2">Monthly view</a></li>
@@ -20,38 +19,31 @@ permalink: /contributors/
       <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/17">Music</a></li>
     </ul>
   </li>
-  <li><strong>Skills Gained:</strong> Editing XML</li>
+  <li>Skills Gained: Editing XML</li>
 </ul>
 
-
-<!-- Team Member 2 -->
-<h2>Team Member 2</h2>
+<h4>Kurt Galvez</h4>
 <ul>
-  <li><strong>Role:</strong> [Role]</li>
-  <li><strong>Contributions:</strong> [Key contributions]</li>
-  <li><strong>Skills Gained:</strong> [New skills developed]</li>
+  <li>Contributions: [Key contributions]</li>
+  <li>Skills Gained: [New skills developed]</li>
 </ul>
 
-<!-- Team Member 3 -->
-<h2>Team Member 3</h2>
+<h4>James Park</h4>
 <ul>
-  <li><strong>Role:</strong> [Role]</li>
-  <li><strong>Contributions:</strong> [Key contributions]</li>
-  <li><strong>Skills Gained:</strong> [New skills developed]</li>
+  <li>Website creation</li>
+  <li>Refectoring code</li>
+  <li>Writing System Test/Unit Test</li>
 </ul>
 
-<!-- Team Member 4 -->
-<h2>Team Member 4</h2>
+<h4>Eashana Singhal</h4>
 <ul>
-  <li><strong>Role:</strong> [Role]</li>
-  <li><strong>Contributions:</strong> [Key contributions]</li>
-  <li><strong>Skills Gained:</strong> [New skills developed]</li>
+  <li>Contributions: [Key contributions]</li>
+  <li>Skills Gained: [New skills developed]</li>
 </ul>
 
-<!-- Team Member 5 -->
-<h2>Team Member 5</h2>
+<h4>Darian Langman</h4>
 <ul>
-  <li><strong>Role:</strong> [Role]</li>
-  <li><strong>Contributions:</strong> [Key contributions]</li>
-  <li><strong>Skills Gained:</strong> [New skills developed]</li>
+  <li>Contributions: [Key contributions]</li>
+  <li>Skills Gained: [New skills developed]</li>
 </ul>
+
