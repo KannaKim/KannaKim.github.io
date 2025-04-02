@@ -2,6 +2,8 @@
 layout: page
 ---
 
+# What is Stalendar?
+
 Stalendar is an android app made to help students planning their time according to their schedule. Student can use this app to schedule their activity, set the timer, and be notified when their schedule is up! 
 
 ### Screenshots
