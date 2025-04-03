@@ -71,20 +71,28 @@ permalink: /contributors/
 
 <h4>Eashana Singhal</h4>
 <ul>
-    <li>Contributions:</li>
+  <li>Contributions:</li>
+  <ul>
+    <li>Major Features:</li>
     <ul>
-      <li>Major Feature:</li>
-      <ul>
-        <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/8?show=19781">Daily View</a></li>
-        <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/9">Adding Animation</a></li>
-      </ul>
-      <li>Bug fix</li>
+      <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/8?show=19781">Daily View</a> – Integrated data from the logic layer to dynamically display content on the screen</li>
+      <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/9">Animations</a> – Designed and implemented user interface animations</li>
+      <li><a href="https://code.cs.umanitoba.ca/comp3350-winter2025/a01-g03-byte_me/-/issues/105">Notifications</a> – Implemented the notifications feature and ensured it integrated well with other components</li>
     </ul>
+    <li>Refactored existing code to follow the 3-layer architecture</li>
+    <li>Wrote unit tests to ensure functionality and maintainability of implemented features</li>
+  </ul>
   <li>Skills Gained:</li> 
   <ul>
-    <li>UI creation</li>
+    <li>UI development with animations</li>
+    <li>Feature integration (Daily View, Notifications)</li>
+    <li>Architectural best practices (3-layer design)</li>
+    <li>Unit testing</li>
+    <li>Data integration between logic and UI layers</li>
   </ul>
 </ul>
+
+
 
 <h4>Darian Langman</h4>
 <ul>
