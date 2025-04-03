@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
   {% include head.html %}
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
   {% include header.html %}
+
+  {% if page.url == "/" %}
+  <div class="hero">
+    <div class="hero-content">
+      <p>Calendar App made by students for students</p>
+      <a href="/about" class="btn">Learn More</a>
+    </div>
+  </div>
+  {% endif %}
   
   <main class="page-content" aria-label="Content">
     <div class="wrapper">
@@ -12,6 +22,36 @@
     </div>
   </main>
 
-  <!-- {% include footer.html %} -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <h4>Contact Us</h4>
+      <p>We'd love to hear from you! Check out our profiles to get in touch or see our work:</p>
+      <ul class="contributors">
+        <li>
+          <strong>Alexander Dyakin:</strong>
+          <a href="https://github.com/ablepacifist" target="_blank">GitHub</a>,
+          <a href="https://code.cs.umanitoba.ca/ablepacifist" target="_blank">GitLab</a>
+        </li>
+        <li>
+          <strong>James Park:</strong>
+          <a href="https://github.com/KannaKim" target="_blank">GitHub</a>,
+          <a href="https://code.cs.umanitoba.ca/Ori" target="_blank">GitLab</a>
+        </li>
+        <li>
+          <strong>Eashana Singhal:</strong>
+          <a href="https://code.cs.umanitoba.ca/EashanaS" target="_blank">GitLab</a>
+        </li>
+        <li>
+          <strong>Kurt Galvez:</strong>
+          <a href="https://code.cs.umanitoba.ca/KurtGalvez" target="_blank">GitLab</a>
+        </li>
+        <li>
+          <strong>Darian Lagman:</strong>
+          <a href="https://code.cs.umanitoba.ca/Darian" target="_blank">GitLab</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+  
 </body>
 </html>

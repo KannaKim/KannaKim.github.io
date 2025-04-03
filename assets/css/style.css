@@ -1,0 +1,218 @@
+/*
+Navigation bar
+*/
+/* Style for navigation buttons */
+.site-nav a {
+  font-size: 1.2rem; 
+  padding: 10px 20px; 
+  background-color: #4280f1; 
+  color: white; 
+  text-decoration: none; 
+  border-radius: 5px; /* Rounded corners */
+  display: inline-block; 
+}
+
+.site-nav a:hover {
+  background-color: #e5533d; 
+  transition: all 0.3s ease;
+}
+
+/*
+hero content
+*/
+.hero {
+    height: 100vh;
+    background: url('/assets/hero_image.png') center/cover no-repeat, linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+  }
+  .hero-content {
+    margin-top: auto; 
+    margin-bottom: 50px; 
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+    .hero-content p {
+      font-size: 1rem;
+    }
+  }
+  .hero-content h1 {
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .hero-content .btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #e77b68;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+/*
+Feature page:
+*/
+/* Headings */
+h1 {
+  font-size: 3rem; 
+  margin-bottom: 20px;
+  text-align: center; 
+}
+
+h2 {
+  font-size: 2rem; 
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+/* Paragraph */
+p {
+  font-size: 1.5rem; 
+  line-height: 1.8;  
+}
+
+/* List Items */
+ul li {
+  font-size: 1.3rem; 
+  margin-bottom: 10px;
+}
+/* Style for video */
+video {
+  max-width: 100%; 
+  height: auto;   
+  margin: 20px auto; 
+  display: block;  
+  border: 2px solid #ddd; 
+  border-radius: 8px; 
+}
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem; 
+  }
+  h2 {
+    font-size: 1.8rem; 
+  }
+  p, ul li {
+    font-size: 1.2rem; 
+  }
+  video {
+    max-width: 90%; 
+  }
+}
+
+/*
+Main page
+*/
+  main.page-content {
+    min-height: 80vh; /* Adjusts the minimum height, making it larger */
+    padding: 20px;    /* Adds space around the content */
+    background-color: #8ea7bb; 
+  }
+  .wrapper {
+    max-width: 1200px; 
+    margin: 0 auto;  
+    padding: 20px;    
+  }
+  /* Adjust Heading */
+h1 {
+  font-size: 2.5rem; 
+  margin-bottom: 20px;
+}
+
+/* Adjust Paragraph */
+p {
+  font-size: 1.2rem; 
+  line-height: 1.6;  
+}
+
+  @media (max-width: 768px) {
+    main.page-content {
+      padding: 10px;
+    }
+  
+    .wrapper {
+      max-width: 90%;
+    }
+  }
+  /* for screen shots*/
+  .screenshot {
+    max-width: 100%; 
+    height: auto;    
+    display: block;  
+    margin: 10px auto; 
+    border-radius: 8px; 
+  }
+  
+
+
+
+/*
+FOOTER
+*/
+  .site-footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .site-footer .footer-content {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .site-footer h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .site-footer p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .site-footer .contributors {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .site-footer .contributors li {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .site-footer a {
+    color: #ff6347;
+    text-decoration: none;
+  }
+  
+  .site-footer a:hover {
+    color: #e5533d;
+    text-decoration: underline;
+  }
+  
