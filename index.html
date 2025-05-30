@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Accessories Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="./index.html" class="site-title">FooBar</a>
+    </div>
+    <div class="navbar-center">
+      <input type="text" placeholder="Search accessories...">
+    </div>
+    <div class="navbar-right">
+      <a href="cart.html" class="navbar-link">Carts <span id="cartCounter" class="cart-counter">0</span></a>
+      <a href="#" class="navbar-link">Orders</a>
+      <div class="hamburger" tabindex="0" aria-label="Menu" id="hamburgerBtn">
+        <span style="width: 100%"></span>
+        <span style="width: 100%"></span>
+        <span style="width: 100%"></span>
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebarMenu">
+    <div class="sidebar-header">
+      <span>Filter Products</span>
+    </div>
+    <form id="filterForm">
+      <div class="filter-group">
+        <label class="filter-label">Category</label>
+        <select name="category" id="categorySelect">
+          <option value="">All</option>
+          <option value="Phone Case">Phone Case</option>
+          <option value="Power Bank">Power Bank</option>
+          <option value="Charger">Charger</option>
+          <option value="Selfie Sticks">Selfie Sticks</option>
+          <option value="Bluetooth Speaker">Bluetooth Speaker</option>
+          <option value="Screen Protector">Screen Protector</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Condition</label>
+        <select name="condition" id="conditionSelect">
+          <option value="">All</option>
+          <option value="Old">Old</option>
+          <option value="New">New</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Price ($)</label>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="number" name="minPrice" placeholder="Min" min="0" style="width: 60px;">
+          <span>-</span>
+          <input type="number" name="maxPrice" placeholder="Max" min="0" style="width: 60px;">
+        </div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Star Rating</label>
+        <div>
+          <label><input type="checkbox" name="star" value="5"> 5 stars</label><br>
+          <label><input type="checkbox" name="star" value="4"> 4 stars & up</label><br>
+          <label><input type="checkbox" name="star" value="3"> 3 stars & up</label>
+        </div>
+      </div>
+      <button type="button" id="clearFiltersBtn" class="clear-filters">Clear Filters</button>
+    </form>
+  </aside>
+  <section class="products-section">
+    <div class="active-filters" id="activeFilters"></div>
+    <div class="products-grid">
+        <div class="product-card">
+            <a href="./product.html?product=1" class="product-link">
+            <img src="phonecase.png" alt="Phone Case">
+            <div class="product-title">Rugged Armor iPhone 13 Case</div>
+            <div class="product-meta">
+                <span class="condition-badge new">New</span>
+            </div>
+            <div class="product-rating">
+                <span class="stars">★★★★☆</span>
+                <span class="review-count">(120)</span>
+            </div>
+            <div class="product-price">$12.99</div>
+            </a>
+            <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <a href="./product.html?product=2" class="product-link">
+          <img src="powerbank.png" alt="Power Bank">
+          <div class="product-title">Anker PowerCore 10000mAh Portable Charger</div>
+          <div class="product-meta">
+            <span class="condition-badge new">New</span>
+          </div>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(98)</span>
+          </div>
+          <div class="product-price">$29.99</div>
+          </a>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <a href="./product.html?product=3" class="product-link">
+          <img src="charger.png" alt="Charger">
+          <div class="product-title">Samsung Adaptive Fast Charger (Used)</div>
+          <div class="product-meta">
+            <span class="condition-badge old">Old</span>
+          </div>
+          <div class="product-rating">
+            <span class="stars">★★★☆☆</span>
+            <span class="review-count">(76)</span>
+          </div>
+          <div class="product-price">$19.99</div>
+          </a>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <a href="./product.html?product=4" class="product-link">
+          <img src="selfiestick.png" alt="Selfie Stick">
+          <div class="product-title">Extendable Bluetooth Selfie Stick Tripod</div>
+          <div class="product-meta">
+            <span class="condition-badge new">New</span>
+          </div>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(54)</span>
+          </div>
+          <div class="product-price">$9.99</div>
+          </a>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <a href="./product.html?product=5" class="product-link">
+          <img src="bspeaker.png" alt="Bluetooth Speaker">
+          <div class="product-title">Sony SRS-XB12 Extra Bass Speaker</div>
+          <div class="product-meta">
+            <span class="condition-badge old">Old</span>
+          </div>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(210)</span>
+          </div>
+          <div class="product-price">$39.99</div>
+          </a>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <a href="./product.html?product=6" class="product-link">
+          <img src="screenprotector.png" alt="Screen Protector">
+          <div class="product-title">Spigen Tempered Glass Screen Protector</div>
+          <div class="product-meta">
+            <span class="condition-badge new">New</span>
+          </div>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(67)</span>
+          </div>
+          <div class="product-price">$7.99</div>
+          </a>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+    </div>
+  </section>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const productCards = document.querySelectorAll('.product-card');
+      
+      // Initialize cart counter
+      const cartCounter = document.getElementById('cartCounter');
+      if (cartCounter) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCounter.textContent = totalItems;
+      }
+
+      // Add click handlers for Add to Cart buttons
+      productCards.forEach((card, index) => {
+        const addToCartBtn = card.querySelector('.add-to-cart-btn');
+        const productLink = card.querySelector('.product-link');
+        const productName = card.querySelector('.product-title').textContent;
+        const productPrice = card.querySelector('.product-price').textContent;
+        const productImg = card.querySelector('img').src.split('/').pop(); // Get image filename
+
+        if (addToCartBtn) {
+          addToCartBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Prevent triggering the product link
+
+            // Get existing cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if item already exists in cart
+            const existingItemIndex = cart.findIndex(item => item.name === productName);
+            
+            if (existingItemIndex !== -1) {
+              // Update quantity if item exists
+              cart[existingItemIndex].quantity += 1;
+            } else {
+              // Add new item if it doesn't exist
+              cart.push({
+                name: productName,
+                price: productPrice,
+                img: productImg,
+                quantity: 1
+              });
+            }
+            
+            // Save updated cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update cart counter
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartCounter) {
+              cartCounter.textContent = totalItems;
+            }
+          });
+        }
+      });
+      
+      if (typeof productData !== 'undefined' && productData.length === productCards.length) {
+        productCards.forEach((card, index) => {
+          productData[index].element = card; 
+          
+          const starsSpan = card.querySelector('.stars');
+          const product = productData[index];
+          if (starsSpan && product && typeof product.stars === 'number') {
+            const filledStars = '★'.repeat(product.stars);
+            const emptyStars = '☆'.repeat(5 - product.stars);
+            starsSpan.textContent = filledStars + emptyStars;
+          }
+        });
+      } else {
+        console.error('Product data not available or mismatch with product cards.');
+      }
+      
+      filterProducts(); 
+    });
+  </script>
+</body>
+</html>

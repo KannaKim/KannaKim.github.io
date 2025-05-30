@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .product-detail-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 32px 24px 24px 24px;
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+    .product-detail-header {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .product-detail-header img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #f5f5f7;
+    }
+    .product-detail-info {
+      flex: 1;
+      min-width: 220px;
+    }
+    .product-detail-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .product-detail-meta {
+      color: #666;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+    .product-detail-price {
+      font-size: 1.25rem;
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .product-detail-rating {
+      margin-bottom: 12px;
+    }
+    .product-detail-rating .stars {
+      color: #FFD700;
+      font-size: 1.2em;
+    }
+    .reviews-section {
+      margin-top: 36px;
+    }
+    .review {
+      background: #fafbfc;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .review .reviewer {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .review .review-stars {
+      color: #FFD700;
+      font-size: 1em;
+      margin-right: 6px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #0056b3;
+    }
+    .product-detail-desc {
+      margin-bottom: 14px;
+      color: #444;
+      font-size: 1.07rem;
+      line-height: 1.5;
+    }
+    .add-review-section {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+    }
+    .add-review-section h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+    .add-review-section p {
+      color: #555;
+      font-size: 1.05rem;
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+    .add-review-section .form-group {
+      margin-bottom: 18px;
+    }
+    .add-review-section label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #222;
+    }
+    .add-review-section textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Roboto', Arial, sans-serif;
+      box-sizing: border-box;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .add-review-section textarea:focus {
+      border-color: #007bff;
+    }
+    .add-review-section button[type="submit"] {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-review-section button[type="submit"]:hover {
+      background: #0056b3;
+    }
+    .star-rating-input label:before {
+      content: '★';
+    }
+    .star-rating-input {
+      direction: rtl;
+      display: inline-block;
+      font-size: 0;
+    }
+    .star-rating-input input[type="radio"] {
+      display: none;
+    }
+    .star-rating-input label {
+      direction: ltr;
+      display: inline-block;
+      font-size: 1.5rem;
+      color: #ccc;
+      cursor: pointer;
+      padding: 0 2px;
+    }
+
+    .star-rating-input input[type="radio"]:checked ~ label {
+      color: #FFD700;
+    }
+
+    .star-rating-input label:hover,
+    .star-rating-input label:hover ~ label {
+      color: #ffcc00;
+    }
+
+    /* Chat button styles */
+    .chat-button {
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      /* margin-top: 20px; */
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chat-button:hover {
+      background: #218838;
+    }
+    .chat-button svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Chat popup styles */
+    .chat-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .chat-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .chat-section {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+    .chat-overlay.active .chat-section {
+      transform: translateY(0);
+    }
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+    .chat-header h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: #1a1a1a;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chat-header h3::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #28a745;
+      border-radius: 50%;
+    }
+    .close-chat-btn {
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-size: 1.5rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      line-height: 1;
+    }
+    .close-chat-btn:hover {
+      background: #f5f5f5;
+      color: #333;
+      transform: rotate(90deg);
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      background: #fafbfc;
+      scroll-behavior: smooth;
+    }
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 3px;
+    }
+    .message {
+      margin-bottom: 16px;
+      max-width: 80%;
+      animation: messageSlide 0.3s ease-out;
+      position: relative;
+    }
+    .message.seller {
+      margin-right: auto;
+      margin-left: 0;
+      background: #f0f2f5;
+      color: #1a1a1a;
+      padding: 12px 16px;
+      border-radius: 16px 16px 16px 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .message.user {
+      margin-left: auto;
+      margin-right: 0;
+      background: #007bff;
+      padding: 12px 16px;
+      border-radius: 16px 16px 4px 16px;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+      color: white;
+    }
+    .message-input-container {
+      padding: 20px 24px;
+      background: white;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .message-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 24px;
+      font-size: 1rem;
+      font-family: 'Roboto', Arial, sans-serif;
+      transition: all 0.2s ease;
+      background: #f8f9fa;
+    }
+    .message-input:focus {
+      outline: none;
+      border-color: #007bff;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+    .send-message-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .send-message-btn:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+    .send-message-btn:active {
+      transform: scale(0.95);
+    }
+    @keyframes messageSlide {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="site-title">FooBar</a>
+    </div>
+    <div class="navbar-center">
+      <!-- Search bar is typically not on product detail page, but could be added -->
+    </div>
+    <div class="navbar-right">
+      <a href="product.html" class="navbar-link">Carts <span id="cartCounter" class="cart-counter">0</span></a>
+      <a href="" class="navbar-link">Orders</a>
+      <!-- Hamburger menu could be added if needed -->
+    </div>
+  </nav>
+  <div class="product-detail-container" id="productDetail">
+    <a href="index.html" class="back-link">&larr; Back to Products</a>
+  </div>
+  <script>
+    const products = [
+      {
+        name: 'Rugged Armor iPhone 13 Case',
+        img: 'phonecase.png',
+        condition: 'New',
+        price: '$12.99',
+        category: 'Phone Case',
+        description: 'Shock-absorbing, slim-fit case with carbon fiber design for iPhone 13. Raised edges for screen and camera protection.',
+        rating: 4,
+        reviews: 120,
+        reviewList: [
+          { reviewer: 'Alice', stars: 4, text: 'Great fit and protection for my phone!' },
+          { reviewer: 'Bob', stars: 5, text: 'Stylish and sturdy. Highly recommend.' }
+        ]
+      },
+      {
+        name: 'Anker PowerCore 10000mAh Portable Charger',
+        img: 'powerbank.png',
+        condition: 'New',
+        price: '$29.99',
+        category: 'Power Bank',
+        description: 'Ultra-compact portable charger with high-speed charging technology. Perfect for travel and emergencies.',
+        rating: 5,
+        reviews: 98,
+        reviewList: [
+          { reviewer: 'Chris', stars: 5, text: 'Charges my phone multiple times!' },
+          { reviewer: 'Dana', stars: 5, text: 'Compact and powerful.' }
+        ]
+      },
+      {
+        name: 'Samsung Adaptive Fast Charger (Used)',
+        img: 'charger.png',
+        condition: 'Old',
+        price: '$19.99',
+        category: 'Charger',
+        description: 'Original Samsung fast charger. Used but fully functional. Compatible with most Samsung devices.',
+        rating: 3,
+        reviews: 76,
+        reviewList: [
+          { reviewer: 'Eve', stars: 3, text: 'Still works like new.' },
+          { reviewer: 'Frank', stars: 4, text: 'Good value for a used charger.' }
+        ]
+      },
+      {
+        name: 'Extendable Bluetooth Selfie Stick Tripod',
+        img: 'selfiestick.png',
+        condition: 'New',
+        price: '$9.99',
+        category: 'Selfie Sticks',
+        description: 'Lightweight, extendable selfie stick with Bluetooth remote and tripod mode. Great for group photos.',
+        rating: 4,
+        reviews: 54,
+        reviewList: [
+          { reviewer: 'Grace', stars: 4, text: 'Perfect for travel photos.' },
+          { reviewer: 'Henry', stars: 5, text: 'Easy to use and lightweight.' }
+        ]
+      },
+      {
+        name: 'Sony SRS-XB12 Extra Bass Speaker',
+        img: 'bspeaker.png',
+        condition: 'Old',
+        price: '$39.99',
+        category: 'Bluetooth Speaker',
+        description: 'Portable wireless speaker with extra bass and long battery life. Water-resistant and durable.',
+        rating: 4,
+        reviews: 210,
+        reviewList: [
+          { reviewer: 'Ivy', stars: 5, text: 'Amazing sound quality!' },
+          { reviewer: 'Jack', stars: 4, text: 'Battery lasts all day.' }
+        ]
+      },
+      {
+        name: 'Spigen Tempered Glass Screen Protector',
+        img: 'screenprotector.png',
+        condition: 'New',
+        price: '$7.99',
+        category: 'Screen Protector',
+        description: 'Premium tempered glass with 9H hardness. Easy installation and high touch sensitivity for your device.',
+        rating: 5,
+        reviews: 67,
+        reviewList: [
+          { reviewer: 'Kim', stars: 5, text: 'Crystal clear and easy to apply.' },
+          { reviewer: 'Leo', stars: 5, text: 'Saved my screen more than once.' }
+        ]
+      }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = parseInt(urlParams.get('product'));
+      const product = products[productId - 1];
+
+      const productDetailContainer = document.getElementById('productDetail');
+
+      if (product) {
+        const productHtml = `
+          <a href="index.html" class="back-link">&larr; Back to Products</a>
+          <div class="product-detail-header">
+            <img src="${product.img}" alt="${product.name}">
+            <div class="product-detail-info">
+              <div class="product-detail-title">${product.name}</div>
+              <div class="product-detail-meta">${product.category}</div>
+              <div class="product-detail-price">${product.price}</div>
+              <div class="product-detail-rating">
+                <span class="stars">${'★'.repeat(product.rating)}${'☆'.repeat(5 - product.rating)}</span>
+                <span>(${product.reviews} reviews)</span>
+              </div>
+              <div class="product-detail-desc">${product.description}</div>
+              <div class="product-meta" style="margin-top: 10px; text-align: left;">
+                 Condition: <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
+              </div>
+            </div>
+          </div>
+          <div class="add-to-cart-controls">
+            <input type="number" class="quantity-input" value="1" min="1">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="chat-button" id="openChatBtn">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+              </svg>
+              Chat with Seller
+            </button>
+          </div>
+          <div class="chat-overlay" id="chatOverlay">
+            <section class="chat-section" id="chatSection">
+              <div class="chat-header">
+                <h3>Chat with Seller</h3>
+                <button class="close-chat-btn" id="closeChatBtn">&times;</button>
+              </div>
+              <div class="chat-messages" id="chatMessages">
+                <div class="message seller">
+                  Hello! I'm the seller. How can I help you with this product?
+                </div>
+              </div>
+              <div class="message-input-container">
+                <input type="text" class="message-input" id="messageInput" placeholder="Type your message...">
+                <button class="send-message-btn" id="sendMessageBtn">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                  </svg>
+                </button>
+              </div>
+            </section>
+          </div>
+          <section class="add-review-section">
+            <h3>Leave a review</h3>
+            <form id="reviewForm">
+              <div class="form-group">
+                <label for="review-rating">Star Rating:</label>
+                <div class="star-rating-input">
+                  <input type="radio" id="star5" name="rating" value="5" required><label for="star5"></label>
+                  <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+                  <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+                  <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+                  <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="review-text">Your Review:</label>
+                <textarea id="review-text" name="reviewText" rows="4" required></textarea>
+              </div>
+              <button type="submit">Submit Review</button>
+            </form>
+          </section>
+          <section class="reviews-section">
+            <h3>User Reviews</h3>
+            <div id="userReviews">
+              
+            </div>
+          </section>
+        `;
+        productDetailContainer.innerHTML = productHtml;
+
+        // Handle 'Add to Cart' button click
+        const addToCartButton = productDetailContainer.querySelector('.add-to-cart-btn');
+        if (addToCartButton) {
+          addToCartButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default button behavior
+            
+            const quantityInput = productDetailContainer.querySelector('.quantity-input');
+            const quantity = parseInt(quantityInput.value, 10);
+
+            if (!isNaN(quantity) && quantity > 0) {
+              // Get existing cart from localStorage
+              let cart = JSON.parse(localStorage.getItem('cart')) || [];
+              
+              // Check if item already exists in cart
+              const existingItemIndex = cart.findIndex(item => item.name === product.name);
+              
+              if (existingItemIndex !== -1) {
+                // Update quantity if item exists
+                cart[existingItemIndex].quantity += quantity;
+              } else {
+                // Add new item if it doesn't exist
+                cart.push({
+                  name: product.name,
+                  price: product.price,
+                  img: product.img,
+                  quantity: quantity
+                });
+              }
+              
+              // Save updated cart to localStorage
+              localStorage.setItem('cart', JSON.stringify(cart));
+              
+              // Update cart counter
+              const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+              const cartCounter = document.getElementById('cartCounter');
+              if (cartCounter) {
+                cartCounter.textContent = totalItems;
+              }
+            } else {
+              console.warn('Invalid quantity entered.');
+            }
+          });
+        }
+
+        // Initialize cart counter on page load
+        const cartCounter = document.getElementById('cartCounter');
+        if (cartCounter) {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+          cartCounter.textContent = totalItems;
+        }
+
+        // Display existing reviews
+        const reviewsContainer = document.getElementById('userReviews');
+        if (product.reviewList && product.reviewList.length > 0) {
+          product.reviewList.forEach(review => {
+            const reviewElement = `
+              <div class="review">
+                <div class="reviewer">${review.reviewer}</div>
+                <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}</div>
+                <div class="review-text">${review.text}</div>
+              </div>
+            `;
+            reviewsContainer.innerHTML += reviewElement;
+          });
+        } else {
+          reviewsContainer.innerHTML = '<p>No reviews yet.</p>';
+        }
+
+        // Handle review submission
+        const reviewForm = document.getElementById('reviewForm');
+        reviewForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const rating = reviewForm.rating.value;
+          const reviewText = reviewForm.reviewText.value;
+          
+          // Add new review
+          const newReview = {
+            reviewer: 'John', // You might want to get this from user authentication
+            stars: parseInt(rating),
+            text: reviewText
+          };
+          
+          product.reviewList.push(newReview);
+
+          // Reset form
+          reviewForm.reset();
+          
+          // Update reviews display
+          reviewsContainer.innerHTML = ''; // Clear existing reviews
+          product.reviewList.forEach(review => {
+            const reviewElement = `
+              <div class="review">
+                <div class="reviewer">${review.reviewer}</div>
+                <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}</div>
+                <div class="review-text">${review.text}</div>
+              </div>
+            `;
+            reviewsContainer.innerHTML += reviewElement;
+          });
+        });
+
+        // Chat functionality
+        const chatOverlay = document.getElementById('chatOverlay');
+        const chatSection = document.getElementById('chatSection');
+        const openChatBtn = document.getElementById('openChatBtn');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+
+        // Show chat when button is clicked
+        openChatBtn.addEventListener('click', () => {
+          chatOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden'; // Prevent background scrolling
+          messageInput.focus();
+        });
+
+        // Hide chat when close button is clicked
+        closeChatBtn.addEventListener('click', () => {
+          chatOverlay.classList.remove('active');
+          document.body.style.overflow = ''; // Restore scrolling
+        });
+
+        // Close chat when clicking outside
+        chatOverlay.addEventListener('click', (e) => {
+          if (e.target === chatOverlay) {
+            chatOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+
+        // Close chat when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && chatOverlay.classList.contains('active')) {
+            chatOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+
+        function addMessage(text, isUser = false) {
+          const messageDiv = document.createElement('div');
+          messageDiv.className = `message ${isUser ? 'user' : 'seller'}`;
+          messageDiv.textContent = text;
+          chatMessages.appendChild(messageDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleSendMessage() {
+          const message = messageInput.value.trim();
+          if (message) {
+            addMessage(message, true);
+            messageInput.value = '';
+            
+            // Simulate seller response after 1 second
+            setTimeout(() => {
+              const responses = [
+                "Thanks for your message! I'll get back to you shortly.",
+                "I'm here to help! What would you like to know?",
+                "That's a great question! Let me check the details for you.",
+                "I'm available to answer any questions about this product."
+              ];
+              const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+              addMessage(randomResponse);
+            }, 1000);
+          }
+        }
+
+        sendMessageBtn.addEventListener('click', handleSendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            handleSendMessage();
+          }
+        });
+
+      } else {
+        productDetailContainer.innerHTML = '<p>Product not found.</p>';
+      }
+    });
+  </script>
+</body>
+</html> 

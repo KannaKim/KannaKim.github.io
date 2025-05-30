@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .cart-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .cart-header {
+      margin-bottom: 30px;
+    }
+    .cart-header h1 {
+      font-size: 2rem;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .cart-empty {
+      text-align: center;
+      padding: 40px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .cart-empty p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .continue-shopping {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .continue-shopping:hover {
+      background: #0056b3;
+    }
+    .cart-items {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      gap: 20px;
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .cart-item-image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .cart-item-details {
+      flex: 1;
+    }
+    .cart-item-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #1a1a1a;
+    }
+    .cart-item-price {
+      color: #007bff;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .quantity-btn {
+      background: #f0f2f5;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .quantity-btn:hover {
+      background: #e0e2e5;
+    }
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px;
+      font-size: 1rem;
+    }
+    .remove-item {
+      color: #dc3545;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .remove-item:hover {
+      background: #fff5f5;
+    }
+    .cart-summary {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      color: #666;
+    }
+    .summary-row.total {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      border-top: 1px solid #eee;
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 20px;
+    }
+    .checkout-btn:hover {
+      background: #0056b3;
+    }
+    .checkout-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="site-title">FooBar</a>
+    </div>
+    <div class="navbar-center">
+      <!-- Search bar could be added if needed -->
+    </div>
+    <div class="navbar-right">
+      <a href="cart.html" class="navbar-link">Carts <span id="cartCounter" class="cart-counter">0</span></a>
+      <a href="#" class="navbar-link">Orders</a>
+    </div>
+  </nav>
+
+  <div class="cart-container">
+    <div class="cart-header">
+      <h1>Shopping Cart</h1>
+    </div>
+
+    <div id="cartContent">
+      <!-- Cart content will be dynamically populated -->
+    </div>
+  </div>
+
+  <script>
+    // Get cart data from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function updateCartDisplay() {
+      const cartContent = document.getElementById('cartContent');
+      const cartCounter = document.getElementById('cartCounter');
+      
+      // Update cart counter
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCounter.textContent = totalItems;
+
+      if (cart.length === 0) {
+        cartContent.innerHTML = `
+          <div class="cart-empty">
+            <p>Your cart is empty</p>
+            <a href="index.html" class="continue-shopping">Continue Shopping</a>
+          </div>
+        `;
+        return;
+      }
+
+      // Calculate total price
+      const totalPrice = cart.reduce((sum, item) => {
+        const price = parseFloat(item.price.replace('$', ''));
+        return sum + (price * item.quantity);
+      }, 0);
+
+      // Generate cart items HTML
+      const cartItemsHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <img src="${item.img}" alt="${item.name}" class="cart-item-image">
+          <div class="cart-item-details">
+            <div class="cart-item-title">${item.name}</div>
+            <div class="cart-item-price">${item.price}</div>
+            <div class="cart-item-quantity">
+              <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+              <input type="number" class="quantity-input" value="${item.quantity}" 
+                     min="1" onchange="updateQuantity(${index}, this.value - item.quantity)">
+              <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+            </div>
+          </div>
+          <button class="remove-item" onclick="removeItem(${index})">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+          </button>
+        </div>
+      `).join('');
+
+      // Generate summary HTML
+      const summaryHTML = `
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>$${totalPrice.toFixed(2)}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>$${totalPrice.toFixed(2)}</span>
+          </div>
+          <button class="checkout-btn" onclick="checkout()" ${totalItems === 0 ? 'disabled' : ''}>
+            Proceed to Checkout
+          </button>
+        </div>
+      `;
+
+      cartContent.innerHTML = `
+        <div class="cart-items">
+          ${cartItemsHTML}
+        </div>
+        ${summaryHTML}
+      `;
+    }
+
+    function updateQuantity(index, change) {
+      const newQuantity = cart[index].quantity + change;
+      if (newQuantity > 0) {
+        cart[index].quantity = newQuantity;
+        saveCart();
+        updateCartDisplay();
+      }
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      saveCart();
+      updateCartDisplay();
+    }
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function checkout() {
+      // Here you would typically redirect to a checkout page
+      // For now, we'll just show an alert
+      alert('Proceeding to checkout...');
+      // Clear cart after checkout
+      cart = [];
+      saveCart();
+      updateCartDisplay();
+    }
+
+    // Initialize cart display
+    updateCartDisplay();
+  </script>
+</body>
+</html> 
