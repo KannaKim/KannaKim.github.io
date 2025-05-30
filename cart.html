@@ -290,13 +290,7 @@
     }
 
     function checkout() {
-      // Here you would typically redirect to a checkout page
-      // For now, we'll just show an alert
-      alert('Proceeding to checkout...');
-      // Clear cart after checkout
-      cart = [];
-      saveCart();
-      updateCartDisplay();
+      window.location.href = 'checkout.html';
     }
 
     // Initialize cart display
