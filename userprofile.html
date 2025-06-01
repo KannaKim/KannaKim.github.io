@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <h1 ID="site-name">THE CELL HUB</h1>
+
+    <div class="header">
+        <p onclick="redirectToHome()">Home</p>
+    </div>
+
+    <div class="profile-photo" onclick="document.getElementById('upload').click()">
+        <img id="profileImage" src="" alt="Profile Photo" style="display: none;" />
+        <span class="placeholder">Add Photo</span>
+        <input type="file" id="upload"  style="display: none;" onchange="loadImage(event)">
+    </div>
+
+    <div class="user-details">
+        <p id="userName"><strong>Username:</strong> Iron Man</p>
+        <p><strong>Rating:</strong> <span id="userRating">★★★★★</span></p>
+    </div>
+
+    <div class="profile-options">
+        <div class="card">
+            <img src="favorites.jpg" alt="Favourites" />
+            <span>Favourites</span>
+        </div>
+        <div class="card">
+            <img src="saved.png" alt="Saved" />
+            <span>Saved</span>
+        </div>
+        <div class="card">
+            <img src="notifiactions.png" alt="Notifications" />
+            <span>Notifications</span>
+        </div>
+        <div class="card">
+            <img src="ratings.png" alt="Ratings" />
+            <span>Ratings</span>
+        </div>
+
+
+
+        <div class="card1">
+            <img src="edit.png" alt="Edit Profile" />
+            <span>Edit Profile</span>
+        </div>
+
+        <div class="card1">
+            <img src="listings.png" alt="Listings" />
+            <span>Listings</span>
+        </div>
+
+        <div class="card1">
+            <img src="sales.png" alt="Sales" />
+            <span>Sales</span>
+        </div>
+    </div>
+
+    <div class="add-listing">
+        <button id="add-button">Add Listing</button>
+    </div>
+</body>
+<script src="profile.js"></script>
+</html>
