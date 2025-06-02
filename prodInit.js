@@ -309,7 +309,7 @@ function renderProducts() {
     if (show) {
       // Reconstruct the product card HTML with the button
       filteredProductsHtml += `
-        <a href="./product.html?product=${index}" class="product-link">
+        <a href="./product.html?product=${product.id}" class="product-link">
           <div class="product-card">
             <img src="${product.img}" alt="${product.name}">
             <div class="product-title" id=${product.id} data-category=${product.category.replace(" ","")}>${product.name}</div>
