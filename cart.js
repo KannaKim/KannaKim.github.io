@@ -99,7 +99,7 @@ function checkout() {
   const order = {
     orderNumber: `ORD-${Date.now()}`,
     date: new Date().toISOString(),
-    status: 'processing',
+    status: 'Completed',
     items: cart.map(item => ({
       name: item.name,
       price: parseFloat(item.price),
@@ -121,8 +121,9 @@ function checkout() {
   cart = [];
   saveCart();
 
-  // Redirect to orders page
-  window.location.href = 'orders.html';
+  // Show alert and redirect
+  alert('Payment successful! Thank you for your purchase.');
+  window.location.href = 'index.html';
 }
 
 // Initialize cart display
@@ -234,3 +235,33 @@ document.addEventListener('DOMContentLoaded', function() {
   renderCart();
   updateCartCounter();
 });
+
+// Update the checkout button event listener
+const checkoutBtn = document.querySelector('.checkout-btn');
+if (checkoutBtn) {
+  checkoutBtn.addEventListener('click', function() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) return;
+
+    // Create new order
+    const order = {
+      orderNumber: 'ORD' + Date.now(),
+      date: new Date().toISOString(),
+      status: 'Completed',
+      items: cart,
+      totalPrice: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    };
+
+    // Save order to localStorage
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    // Clear cart
+    localStorage.setItem('cart', JSON.stringify([]));
+
+    // Show alert and redirect
+    alert('Payment successful! Thank you for your purchase.');
+    window.location.href = 'index.html';
+  });
+}
