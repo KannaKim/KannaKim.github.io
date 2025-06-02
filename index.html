@@ -15,7 +15,8 @@
     .toast {
       position: fixed;
       top: 20px;
-      right: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       background: #4CAF50;
       color: white;
       padding: 16px 24px;
@@ -52,20 +53,22 @@
 
     @keyframes slideIn {
       from {
-        transform: translateY(-100%);
+        transform: translate(-50%, -100%);
         opacity: 0;
       }
       to {
-        transform: translateY(0);
+        transform: translate(-50%, 0);
         opacity: 1;
       }
     }
 
     @keyframes fadeOut {
       from {
+        transform: translate(-50%, 0);
         opacity: 1;
       }
       to {
+        transform: translate(-50%, -100%);
         opacity: 0;
       }
     }
