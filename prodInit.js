@@ -301,9 +301,19 @@ function renderProducts() {
     if (category && product.category !== category) show = false;
     if (condition && product.condition !== condition) show = false;
     if (product.price < minPrice || product.price > maxPrice) show = false;
+
+    // Calculate average rating from reviewList with 0.5 rounding
+    let averageRating = 0;
+    if (product.reviewList && product.reviewList.length > 0) {
+      const totalStars = product.reviewList.reduce((sum, review) => sum + review.stars, 0);
+      const rawAverage = totalStars / product.reviewList.length;
+      // Round to nearest 0.5
+      averageRating = Math.round(rawAverage );
+    }
+
     if (checkedStars.length) {
       const minStar = Math.min(...checkedStars);
-      if (product.stars < minStar) show = false;
+      if (averageRating < minStar) show = false;
     }
 
     if (show) {
@@ -317,8 +327,8 @@ function renderProducts() {
               <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
             </div>
             <div class="product-rating">
-              <span class="stars">${'★'.repeat(product.stars) + '☆'.repeat(5 - product.stars)}</span>
-              <span class="review-count">(${product.reviews})</span>
+              <span class="stars">${'★'.repeat(Math.floor(averageRating))}${averageRating % 1 === 0.5 ? '½' : ''}${'☆'.repeat(5 - Math.ceil(averageRating))}</span>
+              <span class="review-count">(${product.reviewList ? product.reviewList.length : 0})</span>
             </div>
             <div class="product-price">$${product.price.toFixed(2)}</div>
             <button class="add-to-cart-btn">Add to Cart</button>

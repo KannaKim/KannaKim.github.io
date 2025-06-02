@@ -1,12 +1,19 @@
-const products = JSON.parse(localStorage.getItem('products')) || [];
-    
+let products = JSON.parse(localStorage.getItem('products')) || [];
+let averageRating = 0;
     document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const productId = parseInt(urlParams.get('product'));
-      const productIndex = products.findIndex(product => product.id === productId);
-      const product = products[productIndex];
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('product'));
+        const productIndex = products.findIndex(product => product.id === productId);
+        let product = products[productIndex];
 
-      const productDetailContainer = document.getElementById('productDetail');
+        const productDetailContainer = document.getElementById('productDetail');
+        if (product.reviewList && product.reviewList.length > 0) {
+            const totalStars = product.reviewList.reduce((sum, review) => sum + review.stars, 0);
+            const rawAverage = totalStars / product.reviewList.length;
+            // Round to nearest 0.5
+            averageRating = Math.round(rawAverage);
+        }
+
 
       if (product) {
         const productHtml = `
@@ -16,9 +23,9 @@ const products = JSON.parse(localStorage.getItem('products')) || [];
             <div class="product-detail-info">
               <div class="product-detail-title">${product.name}</div>
               <div class="product-detail-meta">${product.category}</div>
-              <div class="product-detail-price">${product.price}</div>
+              <div class="product-detail-price">$${product.price.toFixed(2)}</div>
               <div class="product-detail-rating">
-                <span class="stars">${'★'.repeat(product.rating)}${'☆'.repeat(5 - product.rating)}</span>
+                <span class="stars">${'★'.repeat(averageRating)}${'☆'.repeat(5 - averageRating)}</span>
                 <span>(${product.reviews} reviews)</span>
               </div>
               <div class="product-detail-desc">${product.description}</div>
@@ -170,7 +177,7 @@ const products = JSON.parse(localStorage.getItem('products')) || [];
                 </button>
                 ` : ''}
                 <div class="reviewer">${review.reviewer}</div>
-                <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}</div>
+                <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5-review.stars)}</div>
                 <div class="review-text">${review.text}</div>
                 <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
               </div>
@@ -218,7 +225,7 @@ const products = JSON.parse(localStorage.getItem('products')) || [];
           };
           
           // Update product in localStorage
-          const products = JSON.parse(localStorage.getItem('products')) || [];
+          let products = JSON.parse(localStorage.getItem('products')) || [];
           const urlParams = new URLSearchParams(window.location.search);
           const productId = parseInt(urlParams.get('product'));
           const productIndex = products.findIndex(product => product.id === productId);
@@ -265,10 +272,17 @@ const products = JSON.parse(localStorage.getItem('products')) || [];
           });
 
           // Update the product rating display
+          products = JSON.parse(localStorage.getItem('products')) || [];
+          product = products[productIndex];
+          if (product.reviewList && product.reviewList.length > 0) {
+            const totalStars = product.reviewList.reduce((sum, review) => sum + review.stars, 0)+parseInt(rating);
+            const rawAverage = totalStars / (product.reviewList.length+1);
+            averageRating = Math.round(rawAverage);
+        }
           const ratingDisplay = document.querySelector('.product-detail-rating');
           if (ratingDisplay) {
             ratingDisplay.innerHTML = `
-              <span class="stars">★★★★★</span>
+              <span class="stars">${'★'.repeat(averageRating)}${'☆'.repeat(5-averageRating)}</span>
               <span>(${products[productId].reviewList.length} reviews)</span>
             `;
           }
@@ -386,10 +400,18 @@ const products = JSON.parse(localStorage.getItem('products')) || [];
                 });
 
                 // Update the product rating display
+                if (product.reviewList && product.reviewList.length > 0) {
+                    const totalStars = product.reviewList.reduce((sum, review) => sum + review.stars, 0);
+                    const rawAverage = totalStars / product.reviewList.length;
+                    // Round to nearest 0.5
+                    averageRating = Math.round(rawAverage);
+                }
+        
+                
                 const ratingDisplay = document.querySelector('.product-detail-rating');
                 if (ratingDisplay) {
                   ratingDisplay.innerHTML = `
-                    <span class="stars">★★★★★</span>
+                    <span class="stars">${'★'.repeat(averageRating)}${'☆'.repeat(5-averageRating)}</span>
                     <span>(${products[productId].reviewList.length} reviews)</span>
                   `;
                 }
