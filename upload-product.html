@@ -381,15 +381,11 @@
           products.push(newProduct);
           localStorage.setItem('products', JSON.stringify(products));
 
-          // Show success message
-          successMessage.style.display = 'block';
-          form.reset();
-          imagePreview.style.display = 'none';
-
-          // Hide success message after 3 seconds
-          setTimeout(() => {
-            successMessage.style.display = 'none';
-          }, 3000);
+          // Show success alert
+          alert('Product has been successfully registered!');
+          
+          // Redirect to homepage
+          window.location.href = 'index.html';
         }
       });
 
