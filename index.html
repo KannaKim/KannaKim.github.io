@@ -10,6 +10,7 @@
   <link href="assets/fontawesome-free-6.7.2-web/css/fontawesome.min.css" rel="stylesheet">
   <link href="assets/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet">
   <link href="assets/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -33,9 +34,6 @@
       <a href="orders.html" class="navbar-link">
         Orders
       </a>
-      <div class="hamburger" tabindex="0" aria-label="Menu" id="hamburgerBtn">
-        <i class="fa-solid fa-bars"></i>
-      </div>
     </div>
   </nav>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -84,6 +82,9 @@
     </form>
   </aside>
   <section class="products-section">
+    <div class="flex filter relative top-0 left-250 text-2xl" tabindex="0" aria-label="Menu" id="filterBtn">
+      <i class="fa-solid fa-filter"></i>
+    </div>
     <div class="active-filters" id="activeFilters"></div>
     <div class="products-grid" id="productsGrid">
         <!-- <div class="product-card"> -->
@@ -234,7 +235,7 @@
             const card = btn.closest('.product-card');
             const productName = card.querySelector('.product-title').textContent;
             const productPrice = parseFloat(card.querySelector('.product-price').textContent.replace('$', ''));
-            const productImg = card.querySelector('img').src.split('/').pop();
+            const productImg = card.querySelector('img').src;
             
             // Get existing cart from localStorage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -302,6 +303,35 @@
       document.getElementById('conditionSelect').addEventListener('change', filterProducts);
       document.querySelector('input[name="minPrice"]').addEventListener('input', filterProducts);
       document.querySelector('input[name="maxPrice"]').addEventListener('input', filterProducts);
+
+      const minPriceInput = document.querySelector('input[name="minPrice"]');
+      const maxPriceInput = document.querySelector('input[name="maxPrice"]');
+
+      function validatePriceInputs() {
+        let min = parseFloat(minPriceInput.value);
+        let max = parseFloat(maxPriceInput.value);
+
+        // Prevent negative numbers
+        if (minPriceInput.value && min < 0) {
+          minPriceInput.value = 0;
+          min = 0;
+        }
+        if (maxPriceInput.value && max < 0) {
+          maxPriceInput.value = 0;
+          max = 0;
+        }
+
+        // Prevent min > max
+        if (minPriceInput.value && maxPriceInput.value && min > max) {
+          maxPriceInput.setCustomValidity("Max price must be greater than or equal to min price.");
+          maxPriceInput.reportValidity();
+        } else {
+          maxPriceInput.setCustomValidity("");
+        }
+      }
+
+      minPriceInput.addEventListener('input', validatePriceInputs);
+      maxPriceInput.addEventListener('input', validatePriceInputs);
     });
   </script>
 </body>

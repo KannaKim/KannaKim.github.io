@@ -16,11 +16,11 @@ searchInput.addEventListener('input', function() {
 
 const sidebar = document.getElementById('sidebarMenu');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
-const hamburgerBtn = document.getElementById('hamburgerBtn');
+const filterBtn = document.getElementById('filterBtn');
 const filterForm = document.getElementById('filterForm');
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
-hamburgerBtn.addEventListener('click', () => {
+filterBtn.addEventListener('click', () => {
   sidebar.classList.add('open');
   sidebarOverlay.classList.add('open');
 });

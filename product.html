@@ -467,17 +467,75 @@
 <body>
   <nav class="navbar">
     <div class="navbar-left">
-      <a href="index.html" class="site-title">FooBar</a>
+      <a href="./index.html" class="site-title">FooBar</a>
     </div>
+    <a class="user-profile" href="profile.html">
+      <i class="fa-solid fa-user"></i>
+    </a>
     <div class="navbar-center">
-      <!-- Search bar is typically not on product detail page, but could be added -->
+      <input type="text" placeholder="Search accessories...">
     </div>
     <div class="navbar-right">
-      <a href="cart.html" class="navbar-link">Carts <span id="cartCounter" class="cart-counter">0</span></a>
-      <a href="" class="navbar-link">Orders</a>
-      <!-- Hamburger menu could be added if needed -->
+      <a href="upload-product.html" class="navbar-link">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+      <a href="cart.html" class="navbar-link">
+        Carts 
+        <span id="cartCounter" class="cart-counter">0</span>
+      </a>
+      <a href="orders.html" class="navbar-link">
+        Orders
+      </a>
+      <div class="hamburger" tabindex="0" aria-label="Menu" id="hamburgerBtn">
+        <i class="fa-solid fa-bars"></i>
+      </div>
     </div>
   </nav>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebarMenu">
+    <div class="sidebar-header">
+      <span>Filter Products</span>
+    </div>
+    <form id="filterForm">
+      <div class="filter-group">
+        <label class="filter-label">Category</label>
+        <select name="category" id="categorySelect">
+          <option value="">All</option>
+          <option value="Phone Case">Phone Case</option>
+          <option value="Power Bank">Power Bank</option>
+          <option value="Charger">Charger</option>
+          <option value="Selfie Sticks">Selfie Sticks</option>
+          <option value="Bluetooth Speaker">Bluetooth Speaker</option>
+          <option value="Screen Protector">Screen Protector</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Condition</label>
+        <select name="condition" id="conditionSelect">
+          <option value="">All</option>
+          <option value="Old">Old</option>
+          <option value="New">New</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Price ($)</label>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="number" name="minPrice" placeholder="Min" min="0" style="width: 60px;">
+          <span>-</span>
+          <input type="number" name="maxPrice" placeholder="Max" min="0" style="width: 60px;">
+        </div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Star Rating</label>
+        <div>
+          <label><input type="checkbox" name="star" value="5"> 5 stars</label><br>
+          <label><input type="checkbox" name="star" value="4"> 4 stars & up</label><br>
+          <label><input type="checkbox" name="star" value="3"> 3 stars & up</label>
+        </div>
+      </div>
+      <button type="button" id="clearFiltersBtn" class="clear-filters">Clear Filters</button>
+    </form>
+  </aside>
   <div class="product-detail-container" id="productDetail">
     <a href="index.html" class="back-link">&larr; Back to Products</a>
   </div>
