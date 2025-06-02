@@ -13,132 +13,112 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
     .orders-container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-
+    .orders-header {
+      margin-bottom: 30px;
+    }
+    .orders-header h1 {
+      font-size: 2rem;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
     .order-card {
       background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 1.5rem;
-      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      overflow: hidden;
     }
-
     .order-header {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #eee;
     }
-
     .order-number {
-      font-weight: bold;
-      color: #333;
+      font-weight: 500;
+      color: #1a1a1a;
     }
-
     .order-date {
       color: #666;
-      margin-left: 1rem;
     }
-
     .order-status {
-      padding: 0.25rem 0.75rem;
+      padding: 4px 12px;
       border-radius: 20px;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       font-weight: 500;
     }
-
     .status-processing {
-      background: #fff3cd;
-      color: #856404;
+      background: #e3f2fd;
+      color: #1976d2;
     }
-
-    .status-shipped {
-      background: #cce5ff;
-      color: #004085;
-    }
-
-    .status-delivered {
-      background: #e6f4ea;
-      color: #1e7e34;
-    }
-
     .order-items {
-      margin: 1rem 0;
+      padding: 20px;
     }
-
     .order-item {
       display: flex;
       align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #f5f5f5;
+      gap: 20px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
     }
-
     .order-item:last-child {
       border-bottom: none;
     }
-
-    .item-image {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 4px;
-      margin-right: 1rem;
+    .order-item-image {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 8px;
     }
-
-    .item-details {
+    .order-item-details {
       flex: 1;
     }
-
-    .item-name {
+    .order-item-title {
       font-weight: 500;
-      margin-bottom: 0.25rem;
+      margin-bottom: 4px;
     }
-
-    .item-price {
+    .order-item-price {
       color: #666;
     }
-
-    .item-quantity {
+    .order-item-quantity {
       color: #666;
-      margin-left: 1rem;
     }
-
-    .order-summary {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid #eee;
-    }
-
     .order-total {
-      font-weight: bold;
+      padding: 20px;
+      background: #f8f9fa;
+      text-align: right;
+      font-weight: 500;
       font-size: 1.1rem;
     }
-
     .no-orders {
       text-align: center;
-      padding: 3rem;
+      padding: 40px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .no-orders p {
       color: #666;
+      margin-bottom: 20px;
     }
-
-    .order-filters {
-      margin-bottom: 2rem;
-      display: flex;
-      gap: 1rem;
-      align-items: center;
+    .continue-shopping {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.2s;
     }
-
-    .filter-select {
-      padding: 0.5rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background: white;
+    .continue-shopping:hover {
+      background: #0056b3;
     }
   </style>
 </head>
@@ -165,143 +145,90 @@
         Carts 
         <span id="cartCounter" class="cart-counter">0</span>
       </a>
-      <a href="orders.html" class="navbar-link invisible">
+      <a href="orders.html" class="navbar-link">
         Orders
       </a>
     </div>
   </nav>
 
   <div class="orders-container">
-    <h1>Order History</h1>
-    <div class="order-filters">
-      <select class="filter-select" id="statusFilter">
-        <option value="">All Status</option>
-        <option value="processing">Processing</option>
-        <option value="shipped">Shipped</option>
-        <option value="delivered">Delivered</option>
-      </select>
-      <select class="filter-select" id="sortFilter">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-        <option value="highest">Highest Amount</option>
-        <option value="lowest">Lowest Amount</option>
-      </select>
+    <div class="orders-header">
+      <h1>Order History</h1>
     </div>
-    <div id="ordersList">
+    <div id="ordersContent">
       <!-- Orders will be dynamically populated here -->
     </div>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get orders from localStorage
-      function getOrders() {
-        return JSON.parse(localStorage.getItem('orders')) || [];
+    function renderOrders() {
+      const ordersContent = document.getElementById('ordersContent');
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+      if (orders.length === 0) {
+        ordersContent.innerHTML = `
+          <div class="no-orders">
+            <p>You haven't placed any orders yet</p>
+            <a href="index.html" class="continue-shopping">Start Shopping</a>
+          </div>
+        `;
+        return;
       }
 
-      function formatDate(dateString) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-      }
+      // Sort orders by date (newest first)
+      orders.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      function getStatusClass(status) {
-        const statusClasses = {
-          processing: 'status-processing',
-          shipped: 'status-shipped',
-          delivered: 'status-delivered'
-        };
-        return statusClasses[status] || '';
-      }
+      let ordersHTML = '';
+      orders.forEach(order => {
+        const orderDate = new Date(order.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
 
-      function getStatusText(status) {
-        return status.charAt(0).toUpperCase() + status.slice(1);
-      }
-
-      function filterAndSortOrders(orders, statusFilter, sortFilter) {
-        // Filter by status
-        let filteredOrders = orders;
-        if (statusFilter) {
-          filteredOrders = orders.filter(order => order.status === statusFilter);
-        }
-
-        // Sort orders
-        switch (sortFilter) {
-          case 'oldest':
-            filteredOrders.sort((a, b) => new Date(a.date) - new Date(b.date));
-            break;
-          case 'highest':
-            filteredOrders.sort((a, b) => b.total - a.total);
-            break;
-          case 'lowest':
-            filteredOrders.sort((a, b) => a.total - b.total);
-            break;
-          default: // newest
-            filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-        }
-
-        return filteredOrders;
-      }
-
-      function renderOrders() {
-        const ordersList = document.getElementById('ordersList');
-        const statusFilter = document.getElementById('statusFilter').value;
-        const sortFilter = document.getElementById('sortFilter').value;
-        
-        const orders = getOrders();
-        const filteredOrders = filterAndSortOrders(orders, statusFilter, sortFilter);
-        
-        if (filteredOrders.length === 0) {
-          ordersList.innerHTML = `
-            <div class="no-orders">
-              <h2>No orders yet</h2>
-              <p>Start shopping to see your orders here!</p>
-            </div>
-          `;
-          return;
-        }
-
-        ordersList.innerHTML = filteredOrders.map(order => `
+        ordersHTML += `
           <div class="order-card">
             <div class="order-header">
               <div>
-                <span class="order-number">${order.orderNumber}</span>
-                <span class="order-date">${formatDate(order.date)}</span>
+                <div class="order-number">${order.orderNumber}</div>
+                <div class="order-date">${orderDate}</div>
               </div>
-              <span class="order-status ${getStatusClass(order.status)}">
-                ${getStatusText(order.status)}
-              </span>
+              <div class="order-status status-${order.status.toLowerCase()}">${order.status}</div>
             </div>
             <div class="order-items">
               ${order.items.map(item => `
                 <div class="order-item">
-                  <img src="${item.image}" alt="${item.name}" class="item-image">
-                  <div class="item-details">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">$${item.price.toFixed(2)}</div>
+                  <img src="${item.image}" alt="${item.name}" class="order-item-image">
+                  <div class="order-item-details">
+                    <div class="order-item-title">${item.name}</div>
+                    <div class="order-item-price">$${item.price.toFixed(2)}</div>
+                    <div class="order-item-quantity">Quantity: ${item.quantity}</div>
                   </div>
-                  <div class="item-quantity">Qty: ${item.quantity}</div>
                 </div>
               `).join('')}
             </div>
-            <div class="order-summary">
-              <div class="order-total">Total: $${order.total.toFixed(2)}</div>
+            <div class="order-total">
+              Total: $${order.total.toFixed(2)}
             </div>
           </div>
-        `).join('');
-      }
+        `;
+      });
 
-      // Add event listeners for filters
-      document.getElementById('statusFilter').addEventListener('change', renderOrders);
-      document.getElementById('sortFilter').addEventListener('change', renderOrders);
+      ordersContent.innerHTML = ordersHTML;
+    }
 
-      // Initialize the page
-      renderOrders();
-
-      // Update cart counter
+    // Initialize cart counter
+    function updateCartCounter() {
       const cartCounter = document.getElementById('cartCounter');
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
       cartCounter.textContent = totalItems;
+    }
+
+    // Render orders when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      renderOrders();
+      updateCartCounter();
     });
   </script>
 </body>

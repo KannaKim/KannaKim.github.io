@@ -188,14 +188,14 @@
       color: white;
       border: none;
       border-radius: 8px;
-      padding: 10px 20px;
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.2s;
-      /* margin-top: 20px; */
       display: flex;
       align-items: center;
       gap: 8px;
+      padding: 10px 20px;
+      height: 50px;
     }
     .chat-button:hover {
       background: #218838;
@@ -388,19 +388,73 @@
       }
     }
     .add-to-cart-controls {
-      margin-top: 20px;
+      margin-top: 0px;
       display: flex;
       gap: 10px;
       align-items: center;
       position: relative;
     }
 
-    .quantity-input {
-      width: 60px;
-      padding: 8px;
+    .quantity-select-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .quantity-select {
+      padding: 8px 12px;
       border: 1px solid #ddd;
-      border-radius: 4px;
-      text-align: center;
+      border-radius: 8px;
+      background: white;
+      font-size: 1rem;
+      color: #333;
+      cursor: pointer;
+      min-width: 80px;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 16px;
+      padding-right: 32px;
+    }
+
+    .quantity-select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    }
+
+    .quantity-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 0 0 8px 8px;
+      margin-top: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .quantity-options.show {
+      display: block;
+    }
+
+    .quantity-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .quantity-option:hover {
+      background-color: #f8f9fa;
+    }
+
+    .quantity-option.selected {
+      background-color: #e9ecef;
     }
 
     .error-message {

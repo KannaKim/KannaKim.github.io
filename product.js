@@ -33,15 +33,21 @@ let averageRating = 0;
               </div>
             </div>
           </div>
-          <div class="add-to-cart-controls">
-            <input type="number" class="quantity-input" value="1" min="1">
-            <div class="error-message">Please enter a positive number</div>
-            <button class="add-to-cart-btn">Add to Cart</button>
-            <button class="chat-button" id="openChatBtn">
-              <svg viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
-              </svg>
-              Chat with Seller
+          <div class="add-to-cart-controls-container flex align-middle mt-10">
+            <div class="add-to-cart-controls">
+              <div class="quantity-select-container">
+                <div class="quantity-select" id="quantitySelect">1</div>
+                <div class="quantity-options" id="quantityOptions">
+                  ${Array.from({length: 30}, (_, i) => 
+                    `<div class="quantity-option" data-value="${i + 1}">${i + 1}</div>`
+                  ).join('')}
+                </div>
+              </div>
+              <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+
+            <button class="chat-button ml-auto" id="openChatBtn">
+              Contact Seller
             </button>
           </div>
           <div class="chat-overlay" id="chatOverlay">
@@ -95,22 +101,37 @@ let averageRating = 0;
         `;
         productDetailContainer.innerHTML = productHtml;
 
+        // Handle quantity selection
+        const quantitySelect = productDetailContainer.querySelector('#quantitySelect');
+        const quantityOptions = productDetailContainer.querySelector('#quantityOptions');
+        let selectedQuantity = 1;
+
+        // Toggle dropdown
+        quantitySelect.addEventListener('click', (e) => {
+          e.stopPropagation();
+          quantityOptions.classList.toggle('show');
+        });
+
+        // Handle option selection
+        quantityOptions.addEventListener('click', (e) => {
+          const option = e.target.closest('.quantity-option');
+          if (option) {
+            selectedQuantity = parseInt(option.dataset.value);
+            quantitySelect.textContent = selectedQuantity;
+            quantityOptions.classList.remove('show');
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+          quantityOptions.classList.remove('show');
+        });
+
         // Handle 'Add to Cart' button click
         const addToCartButton = productDetailContainer.querySelector('.add-to-cart-btn');
         if (addToCartButton) {
           addToCartButton.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent default button behavior
-            
-            const quantityInput = productDetailContainer.querySelector('.quantity-input');
-            const errorMessage = productDetailContainer.querySelector('.error-message');
-            const quantity = parseInt(quantityInput.value, 10);
-
-            if (isNaN(quantity) || quantity <= 0) {
-              errorMessage.classList.add('show');
-              return;
-            }
-
-            errorMessage.classList.remove('show');
             
             // Get existing cart from localStorage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -120,14 +141,14 @@ let averageRating = 0;
             
             if (existingItemIndex !== -1) {
               // Update quantity if item exists
-              cart[existingItemIndex].quantity += quantity;
+              cart[existingItemIndex].quantity += selectedQuantity;
             } else {
               // Add new item if it doesn't exist
               cart.push({
                 name: product.name,
                 price: product.price,
                 img: product.img,
-                quantity: quantity
+                quantity: selectedQuantity
               });
             }
             
@@ -140,28 +161,21 @@ let averageRating = 0;
             if (cartCounter) {
               cartCounter.textContent = totalItems;
             }
+
+            // Show success message
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = `${product.name} added to cart!`;
+            document.body.appendChild(toast);
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+              toast.style.animation = 'fadeOut 0.3s ease-out';
+              setTimeout(() => {
+                toast.remove();
+              }, 300);
+            }, 3000);
           });
-        }
-
-        // Add input validation for quantity
-        const quantityInput = productDetailContainer.querySelector('.quantity-input');
-        const errorMessage = productDetailContainer.querySelector('.error-message');
-        
-        quantityInput.addEventListener('input', function() {
-          const value = parseInt(this.value, 10);
-          if (isNaN(value) || value <= 0) {
-            errorMessage.classList.add('show');
-          } else {
-            errorMessage.classList.remove('show');
-          }
-        });
-
-        // Initialize cart counter on page load
-        const cartCounter = document.getElementById('cartCounter');
-        if (cartCounter) {
-          const cart = JSON.parse(localStorage.getItem('cart')) || [];
-          const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-          cartCounter.textContent = totalItems;
         }
 
         // Display existing reviews

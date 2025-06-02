@@ -26,6 +26,30 @@
       animation: slideIn 0.3s ease-out;
     }
 
+    .quantity-select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      font-size: 1rem;
+      color: #333;
+      cursor: pointer;
+      min-width: 60px;
+      margin-right: 10px;
+    }
+
+    .quantity-select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    }
+
+    .product-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     @keyframes slideIn {
       from {
         transform: translateY(-100%);
@@ -132,148 +156,6 @@
     </div>
   </section>
   <script src="prodInit.js"></script>
-  <script>
-    const item_counter = parseInt(JSON.parse(localStorage.getItem('item-counter')));
-    if (!item_counter) {
-      localStorage.setItem('item-counter', 7); // have 6 items as placeholder 
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      const productCards = document.querySelectorAll('.product-card');
-      const productsGrid = document.getElementById('productsGrid');
-      const cartCounter = document.getElementById('cartCounter');
-      
-      // Initialize cart counter
-      if (cartCounter) {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCounter.textContent = totalItems;
-      }
-
-      
-      // Add click handlers for Add to Cart buttons
-      function setupAddToCartButtons() {
-        document.querySelectorAll('.add-to-cart-btn').forEach((btn, index) => {
-          btn.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const card = btn.closest('.product-card');
-            const productName = card.querySelector('.product-title').textContent;
-            const productPrice = parseFloat(card.querySelector('.product-price').textContent.replace('$', ''));
-            const productImg = card.querySelector('img').src;
-            
-            // Get existing cart from localStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Check if item already exists in cart
-            const existingItemIndex = cart.findIndex(item => item.name === productName);
-            
-            if (existingItemIndex !== -1) {
-              // Update quantity if item exists
-              cart[existingItemIndex].quantity += 1;
-            } else {
-              // Add new item if it doesn't exist
-              cart.push({
-                name: productName,
-                price: productPrice,
-                img: productImg,
-                quantity: 1
-              });
-            }
-            
-            // Save updated cart to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Update cart counter
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            if (cartCounter) {
-              cartCounter.textContent = totalItems;
-            }
-
-            // Show toast notification
-            const toast = document.getElementById('toast');
-            toast.textContent = `${productName} added to cart!`;
-            toast.style.display = 'block';
-            
-            // Hide toast after 3 seconds
-            setTimeout(() => {
-              toast.style.animation = 'fadeOut 0.3s ease-out';
-              setTimeout(() => {
-                toast.style.display = 'none';
-                toast.style.animation = 'slideIn 0.3s ease-out';
-              }, 300);
-            }, 3000);
-          });
-        });
-      }
-
-      // Load uploaded products and setup cart buttons
-      // loadUploadedProducts();
-      setupAddToCartButtons();
-      
-      // Filter functionality
-      function filterProducts() {
-        const categorySelect = document.getElementById('categorySelect');
-        const conditionSelect = document.getElementById('conditionSelect');
-        const minPriceInput = document.querySelector('input[name="minPrice"]');
-        const maxPriceInput = document.querySelector('input[name="maxPrice"]');
-        
-        const products = document.querySelectorAll('.product-card');
-        
-        products.forEach(product => {
-          const price = parseFloat(product.querySelector('.product-price').textContent.replace('$', ''));
-          const condition = product.querySelector('.condition-badge').textContent;
-          console.log(product.querySelector('.product-title').dataset.category.toLowerCase())
-          console.log(categorySelect.value.toLowerCase())
-          console.log(product.querySelector('.product-title').dataset.category.toLowerCase().includes(categorySelect.value.replace(" ","").toLowerCase()))
-          const categoryMatch = !categorySelect.value || product.querySelector('.product-title').dataset.category.toLowerCase().includes(categorySelect.value.replace(" ","").toLowerCase());
-          const conditionMatch = !conditionSelect.value || condition === conditionSelect.value;
-          const minPriceMatch = !minPriceInput.value || price >= parseFloat(minPriceInput.value);
-          const maxPriceMatch = !maxPriceInput.value || price <= parseFloat(maxPriceInput.value);
-          
-          if (categoryMatch && conditionMatch && minPriceMatch && maxPriceMatch) {
-            product.style.display = '';
-          } else {
-            product.style.display = 'none';
-          }
-        });
-      }
-
-      // Add event listeners for filter changes
-      document.getElementById('categorySelect').addEventListener('change', filterProducts);
-      document.getElementById('conditionSelect').addEventListener('change', filterProducts);
-      document.querySelector('input[name="minPrice"]').addEventListener('input', filterProducts);
-      document.querySelector('input[name="maxPrice"]').addEventListener('input', filterProducts);
-
-      const minPriceInput = document.querySelector('input[name="minPrice"]');
-      const maxPriceInput = document.querySelector('input[name="maxPrice"]');
-
-      function validatePriceInputs() {
-        let min = parseFloat(minPriceInput.value);
-        let max = parseFloat(maxPriceInput.value);
-
-        // Prevent negative numbers
-        if (minPriceInput.value && min < 0) {
-          minPriceInput.value = 0;
-          min = 0;
-        }
-        if (maxPriceInput.value && max < 0) {
-          maxPriceInput.value = 0;
-          max = 0;
-        }
-
-        // Prevent min > max
-        if (minPriceInput.value && maxPriceInput.value && min > max) {
-          maxPriceInput.setCustomValidity("Max price must be greater than or equal to min price.");
-          maxPriceInput.reportValidity();
-        } else {
-          maxPriceInput.setCustomValidity("");
-        }
-      }
-
-      minPriceInput.addEventListener('input', validatePriceInputs);
-      maxPriceInput.addEventListener('input', validatePriceInputs);
-    });
-  </script>
+  
 </body>
 </html>

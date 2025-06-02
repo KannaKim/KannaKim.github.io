@@ -319,8 +319,8 @@ function renderProducts() {
     if (show) {
       // Reconstruct the product card HTML with the button
       filteredProductsHtml += `
-        <a href="./product.html?product=${product.id}" class="product-link">
-          <div class="product-card">
+        <div class="product-card">
+          <a href="./product.html?product=${product.id}" class="product-link">
             <img src="${product.img}" alt="${product.name}">
             <div class="product-title" id=${product.id} data-category=${product.category.replace(" ","")}>${product.name}</div>
             <div class="product-meta">
@@ -330,10 +330,15 @@ function renderProducts() {
               <span class="stars">${'★'.repeat(Math.floor(averageRating))}${averageRating % 1 === 0.5 ? '½' : ''}${'☆'.repeat(5 - Math.ceil(averageRating))}</span>
               <span class="review-count">(${product.reviewList ? product.reviewList.length : 0})</span>
             </div>
-            <div class="product-price">$${product.price.toFixed(2)}</div>
+          </a>
+          <div class="product-price">$${product.price.toFixed(2)}</div>
+          <div class="product-actions">
+            <select class="quantity-select">
+              ${Array.from({length: 30}, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')}
+            </select>
             <button class="add-to-cart-btn">Add to Cart</button>
           </div>
-        </a>
+        </div>
       `;
     }
   });
@@ -348,8 +353,54 @@ function renderProducts() {
       const productCard = this.closest('.product-card');
       if (productCard) {
         const productTitle = productCard.querySelector('.product-title').textContent;
-        itemCount+=1
-        updateCartCounter()
+        const productPrice = parseFloat(productCard.querySelector('.product-price').textContent.replace('$', ''));
+        const productImg = productCard.querySelector('img').src;
+        const quantitySelect = this.parentElement.querySelector('.quantity-select');
+        const quantity = parseInt(quantitySelect.value, 10);
+        
+        // Get existing cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if item already exists in cart
+        const existingItemIndex = cart.findIndex(item => item.name === productTitle);
+        
+        if (existingItemIndex !== -1) {
+          // Update quantity if item exists
+          cart[existingItemIndex].quantity += quantity;
+        } else {
+          // Add new item if it doesn't exist
+          cart.push({
+            name: productTitle,
+            price: productPrice,
+            img: productImg,
+            quantity: quantity
+          });
+        }
+        
+        // Save updated cart to localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Update cart counter
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        itemCount = totalItems;
+        updateCartCounter();
+
+        // Show toast notification
+        const toast = document.getElementById('toast');
+        toast.textContent = `${quantity} ${productTitle} added to cart!`;
+        toast.style.display = 'block';
+        
+        // Hide toast after 3 seconds
+        setTimeout(() => {
+          toast.style.animation = 'fadeOut 0.3s ease-out';
+          setTimeout(() => {
+            toast.style.display = 'none';
+            toast.style.animation = 'slideIn 0.3s ease-out';
+          }, 300);
+        }, 3000);
+
+        // Reset quantity to 1
+        quantitySelect.value = "1";
       }
     });
   });
@@ -366,29 +417,74 @@ function updateCartCounter() {
   }
 }
 
+// Initialize cart counter from localStorage
+function initializeCartCounter() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  updateCartCounter();
+}
+
+// Call initializeCartCounter when the page loads
+initializeCartCounter();
+
 // Add event listeners to the 'Add to Cart' buttons using event delegation
 document.addEventListener('click', function(event) {
-  // Check if the clicked element or its parent is an add-to-cart button
   const addToCartButton = event.target.closest('.add-to-cart-btn');
-  // If a button was clicked
   if (addToCartButton) {
-    // Prevent the default action (if it were a form submission or link)
     event.preventDefault();
-    // Stop the event from bubbling up further, preventing the product link click
     event.stopPropagation();
 
-    // Increment the item count
-    itemCount++;
-    // Update the display
-    updateCartCounter();
-
-    // Optional: Provide user feedback (like logging to console or a small notification)
     const productCard = addToCartButton.closest('.product-card');
     if (productCard) {
       const productTitle = productCard.querySelector('.product-title').textContent;
-      console.log(`Added "${productTitle}\" to cart. Total items: ${itemCount}`);
+      const productPrice = parseFloat(productCard.querySelector('.product-price').textContent.replace('$', ''));
+      const productImg = productCard.querySelector('img').src;
+      const quantitySelect = addToCartButton.parentElement.querySelector('.quantity-select');
+      const quantity = parseInt(quantitySelect.value, 10);
+      
+      // Get existing cart from localStorage
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      // Check if item already exists in cart
+      const existingItemIndex = cart.findIndex(item => item.name === productTitle);
+      
+      if (existingItemIndex !== -1) {
+        // Update quantity if item exists
+        cart[existingItemIndex].quantity += quantity;
+      } else {
+        // Add new item if it doesn't exist
+        cart.push({
+          name: productTitle,
+          price: productPrice,
+          img: productImg,
+          quantity: quantity
+        });
+      }
+      
+      // Save updated cart to localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Update cart counter
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      itemCount = totalItems;
+      updateCartCounter();
+
+      // Show toast notification
+      const toast = document.getElementById('toast');
+      toast.textContent = `${quantity} ${productTitle} added to cart!`;
+      toast.style.display = 'block';
+      
+      // Hide toast after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => {
+          toast.style.display = 'none';
+          toast.style.animation = 'slideIn 0.3s ease-out';
+        }, 300);
+      }, 3000);
+
+      // Reset quantity to 1
+      quantitySelect.value = "1";
     }
   }
 });
-
-updateCartCounter();
