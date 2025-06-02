@@ -17,7 +17,6 @@ let averageRating = 0;
 
       if (product) {
         const productHtml = `
-          <a href="index.html" class="back-link">&larr; Back to Products</a>
           <div class="product-detail-header">
             <img src="${product.img}" alt="${product.name}">
             <div class="product-detail-info">

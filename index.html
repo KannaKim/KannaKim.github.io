@@ -11,14 +11,54 @@
   <link href="assets/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet">
   <link href="assets/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      display: none;
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div id="toast" class="toast"></div>
   <nav class="navbar">
-    <div class="navbar-left">
-      <a href="./index.html" class="site-title">FooBar</a>
+    <div class="navbar-left mb-3 w-20">
+      <a href="./index.html" class="site-title">
+        <img src="logo.png" alt="logo" class="logo" width="100%">
+      </a>
     </div>
     <a class="user-profile" href="profile.html">
-      <i class="fa-solid fa-user"></i>
+      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+        <i class="fa-solid fa-user text-gray-500 text-2xl"></i>
+      </div>
     </a>
     <div class="navbar-center">
       <input type="text" placeholder="Search accessories...">
@@ -83,7 +123,8 @@
   </aside>
   <section class="products-section">
     <div class="flex filter relative top-0 left-250 text-2xl" tabindex="0" aria-label="Menu" id="filterBtn">
-      <i class="fa-solid fa-filter"></i>
+      <!-- <i class="fa-solid fa-filter"></i> -->
+      <span>Filter</span>
     </div>
     <div class="active-filters" id="activeFilters"></div>
     <div class="products-grid" id="productsGrid">
@@ -148,6 +189,20 @@
             if (cartCounter) {
               cartCounter.textContent = totalItems;
             }
+
+            // Show toast notification
+            const toast = document.getElementById('toast');
+            toast.textContent = `${productName} added to cart!`;
+            toast.style.display = 'block';
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+              toast.style.animation = 'fadeOut 0.3s ease-out';
+              setTimeout(() => {
+                toast.style.display = 'none';
+                toast.style.animation = 'slideIn 0.3s ease-out';
+              }, 300);
+            }, 3000);
           });
         });
       }

@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order History - FooBar</title>
+  <title>Order History</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="assets/fontawesome-free-6.7.2-web/css/fontawesome.min.css" rel="stylesheet">
+  <link href="assets/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet">
+  <link href="assets/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
     .orders-container {
       max-width: 1200px;
@@ -139,15 +144,30 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="navbar-left">
-      <a href="./index.html" class="site-title">FooBar</a>
+    <div class="navbar-left mb-3 w-20">
+      <a href="./index.html" class="site-title">
+        <img src="logo.png" alt="logo" class="logo" width="100%">
+      </a>
     </div>
-    <div class="navbar-center">
+    <a class="user-profile" href="profile.html">
+      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+        <i class="fa-solid fa-user text-gray-500 text-2xl"></i>
+      </div>
+    </a>
+    <div class="navbar-center invisible">
       <input type="text" placeholder="Search accessories...">
     </div>
     <div class="navbar-right">
-      <a href="cart.html" class="navbar-link">Carts <span id="cartCounter" class="cart-counter">0</span></a>
-      <a href="orders.html" class="navbar-link">Orders</a>
+      <a href="upload-product.html" class="navbar-link">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+      <a href="cart.html" class="navbar-link">
+        Carts 
+        <span id="cartCounter" class="cart-counter">0</span>
+      </a>
+      <a href="orders.html" class="navbar-link invisible">
+        Orders
+      </a>
     </div>
   </nav>
 
