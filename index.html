@@ -87,96 +87,7 @@
     </div>
     <div class="active-filters" id="activeFilters"></div>
     <div class="products-grid" id="productsGrid">
-        <!-- <div class="product-card"> -->
-            <!-- <a href="./product.html?product=1" class="product-link">
-            <img src="phonecase.png" alt="Phone Case">
-            <div class="product-title">Rugged Armor iPhone 13 Case</div>
-            <div class="product-meta">
-                <span class="condition-badge new">New</span>
-            </div>
-            <div class="product-rating">
-                <span class="stars">★★★★☆</span>
-                <span class="review-count">(2)</span>
-            </div>
-            <div class="product-price">$12.99</div>
-            </a>
-            <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-        <div class="product-card">
-          <a href="./product.html?product=2" class="product-link">
-          <img src="powerbank.png" alt="Power Bank">
-          <div class="product-title">Anker PowerCore 10000mAh Portable Charger</div>
-          <div class="product-meta">
-            <span class="condition-badge new">New</span>
-          </div>
-          <div class="product-rating">
-            <span class="stars">★★★★★</span>
-            <span class="review-count">(2)</span>
-          </div>
-          <div class="product-price">$29.99</div>
-          </a>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-        <div class="product-card">
-          <a href="./product.html?product=3" class="product-link">
-          <img src="charger.png" alt="Charger">
-          <div class="product-title">Samsung Adaptive Fast Charger (Used)</div>
-          <div class="product-meta">
-            <span class="condition-badge old">Old</span>
-          </div>
-          <div class="product-rating">
-            <span class="stars">★★★☆☆</span>
-            <span class="review-count">(2)</span>
-          </div>
-          <div class="product-price">$19.99</div>
-          </a>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-        <div class="product-card">
-          <a href="./product.html?product=4" class="product-link">
-          <img src="selfiestick.png" alt="Selfie Stick">
-          <div class="product-title">Extendable Bluetooth Selfie Stick Tripod</div>
-          <div class="product-meta">
-            <span class="condition-badge new">New</span>
-          </div>
-          <div class="product-rating">
-            <span class="stars">★★★★☆</span>
-            <span class="review-count">(2)</span>
-          </div>
-          <div class="product-price">$9.99</div>
-          </a>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-        <div class="product-card">
-          <a href="./product.html?product=5" class="product-link">
-          <img src="bspeaker.png" alt="Bluetooth Speaker">
-          <div class="product-title">Sony SRS-XB12 Extra Bass Speaker</div>
-          <div class="product-meta">
-            <span class="condition-badge old">Old</span>
-          </div>
-          <div class="product-rating">
-            <span class="stars">★★★★☆</span>
-            <span class="review-count">(2)</span>
-          </div>
-          <div class="product-price">$39.99</div>
-          </a>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-        <div class="product-card">
-          <a href="./product.html?product=6" class="product-link">
-          <img src="screenprotector.png" alt="Screen Protector">
-          <div class="product-title">Spigen Tempered Glass Screen Protector</div>
-          <div class="product-meta">
-            <span class="condition-badge new">New</span>
-          </div>
-          <div class="product-rating">
-            <span class="stars">★★★★★</span>
-            <span class="review-count">(2)</span>
-          </div>
-          <div class="product-price">$7.99</div>
-          </a>
-          <button class="add-to-cart-btn">Add to Cart</button> -->
-        <!-- </div> -->
+        
     </div>
   </section>
   <script src="prodInit.js"></script>
@@ -197,34 +108,7 @@
         cartCounter.textContent = totalItems;
       }
 
-      // Load and display products from localStorage
-      function loadUploadedProducts() {
-        const products = JSON.parse(localStorage.getItem('products')) || [];
-        
-        if (products.length > 0) {
-          const uploadedProductsHTML = products.map(product => 
-            `
-            <a href="./product.html?product=${product.id}" class="product-link">
-              <div class="product-card">
-                <img src="${product.image}" alt="${product.name}">
-                <div class="product-title">${product.name}</div>
-                <div class="product-meta">
-                  <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
-                </div>
-                <div class="product-rating">
-                  <span class="stars">★★★★★</span>
-                  <span class="review-count">(${product.reviews || 0})</span>
-                </div>
-                <div class="product-price">$${product.price.toFixed(2)}</div>
-                <button class="add-to-cart-btn">Add to Cart</button>
-              </div>
-            </a>
-          `).join('');
-          
-          productsGrid.insertAdjacentHTML('beforeend', uploadedProductsHTML);
-        }
-      }
-
+      
       // Add click handlers for Add to Cart buttons
       function setupAddToCartButtons() {
         document.querySelectorAll('.add-to-cart-btn').forEach((btn, index) => {
@@ -284,8 +168,10 @@
         products.forEach(product => {
           const price = parseFloat(product.querySelector('.product-price').textContent.replace('$', ''));
           const condition = product.querySelector('.condition-badge').textContent;
-          
-          const categoryMatch = !categorySelect.value || product.querySelector('.product-title').textContent.toLowerCase().includes(categorySelect.value.toLowerCase());
+          console.log(product.querySelector('.product-title').dataset.category.toLowerCase())
+          console.log(categorySelect.value.toLowerCase())
+          console.log(product.querySelector('.product-title').dataset.category.toLowerCase().includes(categorySelect.value.replace(" ","").toLowerCase()))
+          const categoryMatch = !categorySelect.value || product.querySelector('.product-title').dataset.category.toLowerCase().includes(categorySelect.value.replace(" ","").toLowerCase());
           const conditionMatch = !conditionSelect.value || condition === conditionSelect.value;
           const minPriceMatch = !minPriceInput.value || price >= parseFloat(minPriceInput.value);
           const maxPriceMatch = !maxPriceInput.value || price <= parseFloat(maxPriceInput.value);

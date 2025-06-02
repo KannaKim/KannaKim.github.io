@@ -312,7 +312,7 @@ function renderProducts() {
         <a href="./product.html?product=${index}" class="product-link">
           <div class="product-card">
             <img src="${product.img}" alt="${product.name}">
-            <div class="product-title">${product.name}</div>
+            <div class="product-title" id=${product.id} data-category=${product.category.replace(" ","")}>${product.name}</div>
             <div class="product-meta">
               <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
             </div>
