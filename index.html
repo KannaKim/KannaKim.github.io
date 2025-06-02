@@ -7,22 +7,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="assets/fontawesome-free-6.7.2-web/css/fontawesome.min.css" rel="stylesheet">
+  <link href="assets/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet">
+  <link href="assets/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar">
     <div class="navbar-left">
       <a href="./index.html" class="site-title">FooBar</a>
     </div>
+    <a class="user-profile" href="profile.html">
+      <i class="fa-solid fa-user"></i>
+    </a>
     <div class="navbar-center">
       <input type="text" placeholder="Search accessories...">
     </div>
     <div class="navbar-right">
-      <a href="cart.html" class="navbar-link">Carts <span id="cartCounter" class="cart-counter">0</span></a>
-      <a href="#" class="navbar-link">Orders</a>
+      <a href="upload-product.html" class="navbar-link">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+      <a href="cart.html" class="navbar-link">
+        Carts 
+        <span id="cartCounter" class="cart-counter">0</span>
+      </a>
+      <a href="orders.html" class="navbar-link">
+        Orders
+      </a>
       <div class="hamburger" tabindex="0" aria-label="Menu" id="hamburgerBtn">
-        <span style="width: 100%"></span>
-        <span style="width: 100%"></span>
-        <span style="width: 100%"></span>
+        <i class="fa-solid fa-bars"></i>
       </div>
     </div>
   </nav>
@@ -73,9 +85,9 @@
   </aside>
   <section class="products-section">
     <div class="active-filters" id="activeFilters"></div>
-    <div class="products-grid">
-        <div class="product-card">
-            <a href="./product.html?product=1" class="product-link">
+    <div class="products-grid" id="productsGrid">
+        <!-- <div class="product-card"> -->
+            <!-- <a href="./product.html?product=1" class="product-link">
             <img src="phonecase.png" alt="Phone Case">
             <div class="product-title">Rugged Armor iPhone 13 Case</div>
             <div class="product-meta">
@@ -83,7 +95,7 @@
             </div>
             <div class="product-rating">
                 <span class="stars">★★★★☆</span>
-                <span class="review-count">(120)</span>
+                <span class="review-count">(2)</span>
             </div>
             <div class="product-price">$12.99</div>
             </a>
@@ -98,7 +110,7 @@
           </div>
           <div class="product-rating">
             <span class="stars">★★★★★</span>
-            <span class="review-count">(98)</span>
+            <span class="review-count">(2)</span>
           </div>
           <div class="product-price">$29.99</div>
           </a>
@@ -113,7 +125,7 @@
           </div>
           <div class="product-rating">
             <span class="stars">★★★☆☆</span>
-            <span class="review-count">(76)</span>
+            <span class="review-count">(2)</span>
           </div>
           <div class="product-price">$19.99</div>
           </a>
@@ -128,7 +140,7 @@
           </div>
           <div class="product-rating">
             <span class="stars">★★★★☆</span>
-            <span class="review-count">(54)</span>
+            <span class="review-count">(2)</span>
           </div>
           <div class="product-price">$9.99</div>
           </a>
@@ -143,7 +155,7 @@
           </div>
           <div class="product-rating">
             <span class="stars">★★★★☆</span>
-            <span class="review-count">(210)</span>
+            <span class="review-count">(2)</span>
           </div>
           <div class="product-price">$39.99</div>
           </a>
@@ -158,40 +170,72 @@
           </div>
           <div class="product-rating">
             <span class="stars">★★★★★</span>
-            <span class="review-count">(67)</span>
+            <span class="review-count">(2)</span>
           </div>
           <div class="product-price">$7.99</div>
           </a>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
+          <button class="add-to-cart-btn">Add to Cart</button> -->
+        <!-- </div> -->
     </div>
   </section>
-  <script src="script.js"></script>
+  <script src="prodInit.js"></script>
   <script>
+    const item_counter = parseInt(JSON.parse(localStorage.getItem('item-counter')));
+    if (!item_counter) {
+      localStorage.setItem('item-counter', 7); // have 6 items as placeholder 
+    }
     document.addEventListener('DOMContentLoaded', function() {
       const productCards = document.querySelectorAll('.product-card');
+      const productsGrid = document.getElementById('productsGrid');
+      const cartCounter = document.getElementById('cartCounter');
       
       // Initialize cart counter
-      const cartCounter = document.getElementById('cartCounter');
       if (cartCounter) {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCounter.textContent = totalItems;
       }
 
+      // Load and display products from localStorage
+      function loadUploadedProducts() {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        
+        if (products.length > 0) {
+          const uploadedProductsHTML = products.map(product => 
+            `
+            <a href="./product.html?product=${product.id}" class="product-link">
+              <div class="product-card">
+                <img src="${product.image}" alt="${product.name}">
+                <div class="product-title">${product.name}</div>
+                <div class="product-meta">
+                  <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
+                </div>
+                <div class="product-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="review-count">(${product.reviews || 0})</span>
+                </div>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+                <button class="add-to-cart-btn">Add to Cart</button>
+              </div>
+            </a>
+          `).join('');
+          
+          productsGrid.insertAdjacentHTML('beforeend', uploadedProductsHTML);
+        }
+      }
+
       // Add click handlers for Add to Cart buttons
-      productCards.forEach((card, index) => {
-        const addToCartBtn = card.querySelector('.add-to-cart-btn');
-        const productLink = card.querySelector('.product-link');
-        const productName = card.querySelector('.product-title').textContent;
-        const productPrice = card.querySelector('.product-price').textContent;
-        const productImg = card.querySelector('img').src.split('/').pop(); // Get image filename
-
-        if (addToCartBtn) {
-          addToCartBtn.addEventListener('click', function(event) {
+      function setupAddToCartButtons() {
+        document.querySelectorAll('.add-to-cart-btn').forEach((btn, index) => {
+          btn.addEventListener('click', function(event) {
             event.preventDefault();
-            event.stopPropagation(); // Prevent triggering the product link
+            event.stopPropagation();
 
+            const card = btn.closest('.product-card');
+            const productName = card.querySelector('.product-title').textContent;
+            const productPrice = parseFloat(card.querySelector('.product-price').textContent.replace('$', ''));
+            const productImg = card.querySelector('img').src.split('/').pop();
+            
             // Get existing cart from localStorage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             
@@ -220,26 +264,44 @@
               cartCounter.textContent = totalItems;
             }
           });
-        }
-      });
+        });
+      }
+
+      // Load uploaded products and setup cart buttons
+      // loadUploadedProducts();
+      setupAddToCartButtons();
       
-      if (typeof productData !== 'undefined' && productData.length === productCards.length) {
-        productCards.forEach((card, index) => {
-          productData[index].element = card; 
+      // Filter functionality
+      function filterProducts() {
+        const categorySelect = document.getElementById('categorySelect');
+        const conditionSelect = document.getElementById('conditionSelect');
+        const minPriceInput = document.querySelector('input[name="minPrice"]');
+        const maxPriceInput = document.querySelector('input[name="maxPrice"]');
+        
+        const products = document.querySelectorAll('.product-card');
+        
+        products.forEach(product => {
+          const price = parseFloat(product.querySelector('.product-price').textContent.replace('$', ''));
+          const condition = product.querySelector('.condition-badge').textContent;
           
-          const starsSpan = card.querySelector('.stars');
-          const product = productData[index];
-          if (starsSpan && product && typeof product.stars === 'number') {
-            const filledStars = '★'.repeat(product.stars);
-            const emptyStars = '☆'.repeat(5 - product.stars);
-            starsSpan.textContent = filledStars + emptyStars;
+          const categoryMatch = !categorySelect.value || product.querySelector('.product-title').textContent.toLowerCase().includes(categorySelect.value.toLowerCase());
+          const conditionMatch = !conditionSelect.value || condition === conditionSelect.value;
+          const minPriceMatch = !minPriceInput.value || price >= parseFloat(minPriceInput.value);
+          const maxPriceMatch = !maxPriceInput.value || price <= parseFloat(maxPriceInput.value);
+          
+          if (categoryMatch && conditionMatch && minPriceMatch && maxPriceMatch) {
+            product.style.display = '';
+          } else {
+            product.style.display = 'none';
           }
         });
-      } else {
-        console.error('Product data not available or mismatch with product cards.');
       }
-      
-      filterProducts(); 
+
+      // Add event listeners for filter changes
+      document.getElementById('categorySelect').addEventListener('change', filterProducts);
+      document.getElementById('conditionSelect').addEventListener('change', filterProducts);
+      document.querySelector('input[name="minPrice"]').addEventListener('input', filterProducts);
+      document.querySelector('input[name="maxPrice"]').addEventListener('input', filterProducts);
     });
   </script>
 </body>

@@ -16,7 +16,7 @@ body {
   flex: 1;
 }
 .navbar-center {
-  flex: 2;
+  flex: 4;
   display: flex;
   justify-content: center;
 }
@@ -47,6 +47,7 @@ body {
   font-weight: 500;
   margin-left: 16px;
   transition: color 0.2s;
+  display: flex;
 }
 .navbar-link:hover {
   color: #007bff;
@@ -143,6 +144,7 @@ body {
 }
 .product-price {
   margin-top: auto;
+  margin-bottom: auto;
   font-size: 1.05rem;
   font-weight: 700;
   color: #007bff;
@@ -367,6 +369,7 @@ body {
   display: inline-block;
   min-width: 18px;
   text-align: center;
+  align-self: center;
 }
 .add-to-cart-controls {
   display: flex;
@@ -403,3 +406,13 @@ body {
 .product-detail-container .add-to-cart-btn:hover {
   background: #0056b3;
 } 
+.user-profile{
+  color: inherit;
+  font-size: 1.5rem;
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+.user-profile i:hover{
+  cursor: pointer;
+}

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - FooBar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link href="assets/fontawesome-free-6.7.2-web/css/fontawesome.min.css" rel="stylesheet">
+  <link href="assets/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet">
+  <link href="assets/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet">
+  <style>
+    .profile-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .profile-header {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #666;
+    }
+
+    .profile-info h1 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.875rem;
+    }
+
+    .profile-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-tab {
+      padding: 0.75rem 1.5rem;
+      background: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .profile-tab.active {
+      background: #007bff;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      font-family: 'Roboto', sans-serif;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+      position: relative;
+      cursor: default;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+    .product-card a{
+      margin-top: auto;
+      margin-bottom: auto;
+      text-decoration: none;
+    }
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 1rem;
+    }
+
+    .product-title {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .product-price {
+      color: #007bff;
+      font-weight: 500;
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: #666;
+    }
+
+    .review-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .review-product {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .review-user {
+      color: #666;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .review-date {
+      color: #666;
+      font-size: 0.875rem;
+    }
+
+    .review-rating {
+      color: #ffc107;
+      margin-bottom: 0.5rem;
+    }
+
+    .review-content {
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: #ddd;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .add-product-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .add-product-btn:hover {
+      background: #0056b3;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+      opacity: 0;
+    }
+
+    .product-card:hover .delete-btn {
+      opacity: 1;
+    }
+
+    .delete-btn:hover {
+      background: rgb(220, 53, 69);
+    }
+
+    .delete-confirmation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+    }
+
+    .delete-confirmation.active {
+      display: block;
+    }
+
+    .confirmation-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .confirmation-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+
+    .confirm-delete {
+      background: #dc3545;
+      color: white;
+    }
+
+    .confirm-delete:hover {
+      background: #c82333;
+    }
+
+    .cancel-delete {
+      background: #6c757d;
+      color: white;
+    }
+
+    .cancel-delete:hover {
+      background: #5a6268;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="./index.html" class="site-title">FooBar</a>
+    </div>
+    <div class="navbar-center">
+      <input type="text" placeholder="Search accessories...">
+    </div>
+    <div class="navbar-right">
+      <a href="upload-product.html" class="navbar-link">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+      <a href="cart.html" class="navbar-link">
+        Carts 
+        <span id="cartCounter" class="cart-counter">0</span>
+      </a>
+      <a href="orders.html" class="navbar-link">Orders</a>
+    </div>
+  </nav>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div class="profile-info">
+        <h1>John</h1>
+        <p>Hi, I'm John. I like selling products. Nice to meet you!</p>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="totalProducts">0</div>
+            <div class="stat-label">Products</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="totalReviews">0</div>
+            <div class="stat-label">Reviews</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="avgRating">0.0</div>
+            <div class="stat-label">Avg Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-tabs">
+      <h3>Listed Products</h1>
+    </div>
+
+    <div id="productsTab" class="tab-content active">
+      <div class="product-grid" id="productsGrid">
+        <!-- Products will be dynamically populated here -->
+      </div>
+    </div>
+
+    <div id="reviewsTab" class="tab-content">
+      <div id="reviewsList">
+        <!-- Reviews will be dynamically populated here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="delete-confirmation" id="deleteConfirmation">
+    <h3>Delete Product</h3>
+    <p>Are you sure you want to delete this product? This action cannot be undone.</p>
+    <div class="confirmation-buttons">
+      <button class="confirmation-btn confirm-delete" id="confirmDelete">Delete</button>
+      <button class="confirmation-btn cancel-delete" id="cancelDelete">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const tabs = document.querySelectorAll('.profile-tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+
+          // Add active class to clicked tab and corresponding content
+          tab.classList.add('active');
+          document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
+        });
+      });
+
+      // Load user's products
+      function loadProducts() {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        const productsGrid = document.getElementById('productsGrid');
+        const totalProducts = document.getElementById('totalProducts');
+
+        // Filter products to only show John's products
+        const johnsProducts = products.filter(product => product.seller_name === 'John');
+        totalProducts.textContent = johnsProducts.length;
+
+        if (johnsProducts.length === 0) {
+          productsGrid.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-box-open"></i>
+              <p>You haven't listed any products yet</p>
+              <a href="upload-product.html" class="add-product-btn">Add Your First Product</a>
+            </div>
+          `;
+          return;
+        }
+
+        productsGrid.innerHTML = johnsProducts.map((product, index) => `
+          <div class="product-card">
+            <button class="delete-btn" data-index="${product.id}" title="Delete product">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+            <a href="product.html?product=${product.id}">
+              <img src="${product.img}" alt="${product.name}" class="product-image">
+              <div class="product-info">
+                <div class="product-title">${product.name}</div>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+                <div class="product-meta">
+                  <span>${product.reviews || 0} reviews</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        `).join('');
+
+        // Add delete button event listeners
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const index = btn.dataset.index;
+            showDeleteConfirmation(index);
+          });
+        });
+      }
+
+      // Load reviews
+      function loadReviews() {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        const reviewsList = document.getElementById('reviewsList');
+        const totalReviews = document.getElementById('totalReviews');
+        const avgRating = document.getElementById('avgRating');
+
+        // Sample user IDs for demonstration
+        const userIds = ['user123', 'tech_lover', 'gadget_fan', 'mobile_enthusiast', 'accessory_collector'];
+
+        // Simulate reviews (in a real app, these would come from a database)
+        const reviews = products.flatMap(product => {
+          const numReviews = 3;
+          return Array(numReviews).fill(null).map((_, index) => ({
+            productName: product.name,
+            userId: userIds[Math.floor(Math.random() * userIds.length)],
+            rating: 5,
+            content: `Great product! Very satisfied with the quality and service.`,
+            date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
+          }));
+        });
+
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
+
+        totalReviews.textContent = 0;
+        avgRating.textContent = 0;
+
+        if (reviews.length === 0) {
+          reviewsList.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-star"></i>
+              <p>No reviews yet</p>
+            </div>
+          `;
+          return;
+        }
+
+        reviewsList.innerHTML = reviews.map(review => `
+          <div class="review-card">
+            <div class="review-header">
+              <div>
+                <div class="review-product">${review.productName}</div>
+                <div class="review-user">By: ${review.userId}</div>
+              </div>
+              <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+            </div>
+            <div class="review-rating">
+              ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+            </div>
+            <div class="review-content">${review.content}</div>
+          </div>
+        `).join('');
+      }
+
+      // Initialize the page
+      loadProducts();
+      loadReviews();
+
+      // Update cart counter
+      const cartCounter = document.getElementById('cartCounter');
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCounter.textContent = totalItems;
+
+      // Delete confirmation functionality
+      const overlay = document.getElementById('overlay');
+      const deleteConfirmation = document.getElementById('deleteConfirmation');
+      const confirmDelete = document.getElementById('confirmDelete');
+      const cancelDelete = document.getElementById('cancelDelete');
+      let productToDelete = null;
+
+      function showDeleteConfirmation(productId) {
+        productToDelete = parseInt(productId);
+        overlay.classList.add('active');
+        deleteConfirmation.classList.add('active');
+      }
+
+      function hideDeleteConfirmation() {
+        overlay.classList.remove('active');
+        deleteConfirmation.classList.remove('active');
+        productToDelete = null;
+      }
+
+      confirmDelete.addEventListener('click', () => {
+        if (productToDelete !== null) {
+          const products = JSON.parse(localStorage.getItem('products')) || [];
+          // Find and remove the product with matching ID
+          const updatedProducts = products.filter(product => product.id !== productToDelete);
+          localStorage.setItem('products', JSON.stringify(updatedProducts));
+          hideDeleteConfirmation();
+          loadProducts(); // Reload the products list
+        }
+      });
+
+      cancelDelete.addEventListener('click', hideDeleteConfirmation);
+      overlay.addEventListener('click', hideDeleteConfirmation);
+    });
+  </script>
+</body>
+</html> 

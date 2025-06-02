@@ -65,6 +65,7 @@
       padding: 16px 18px;
       margin-bottom: 18px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      position: relative;
     }
     .review .reviewer {
       font-weight: 600;
@@ -153,6 +154,8 @@
       direction: rtl;
       display: inline-block;
       font-size: 0;
+      position: relative;
+      margin-bottom: 8px;
     }
     .star-rating-input input[type="radio"] {
       display: none;
@@ -380,6 +383,85 @@
         transform: translateY(0);
       }
     }
+    .add-to-cart-controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      position: relative;
+    }
+
+    .quantity-input {
+      width: 60px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 4px;
+      display: none;
+      white-space: nowrap;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .rating-error {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 4px;
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 90%;
+      z-index: 1;
+    }
+
+    .rating-error.show {
+      display: block;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .delete-review-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #dc3545;
+      cursor: pointer;
+      padding: 4px 8px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      font-size: 14px;
+    }
+
+    .review:hover .delete-review-btn {
+      opacity: 1;
+    }
+
+    .delete-review-btn:hover {
+      color: #c82333;
+      opacity: 1;
+    }
+
+    .review-date {
+      color: #666;
+      font-size: 0.875rem;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -400,97 +482,12 @@
     <a href="index.html" class="back-link">&larr; Back to Products</a>
   </div>
   <script>
-    const products = [
-      {
-        name: 'Rugged Armor iPhone 13 Case',
-        img: 'phonecase.png',
-        condition: 'New',
-        price: '$12.99',
-        category: 'Phone Case',
-        description: 'Shock-absorbing, slim-fit case with carbon fiber design for iPhone 13. Raised edges for screen and camera protection.',
-        rating: 4,
-        reviews: 120,
-        reviewList: [
-          { reviewer: 'Alice', stars: 4, text: 'Great fit and protection for my phone!' },
-          { reviewer: 'Bob', stars: 5, text: 'Stylish and sturdy. Highly recommend.' }
-        ]
-      },
-      {
-        name: 'Anker PowerCore 10000mAh Portable Charger',
-        img: 'powerbank.png',
-        condition: 'New',
-        price: '$29.99',
-        category: 'Power Bank',
-        description: 'Ultra-compact portable charger with high-speed charging technology. Perfect for travel and emergencies.',
-        rating: 5,
-        reviews: 98,
-        reviewList: [
-          { reviewer: 'Chris', stars: 5, text: 'Charges my phone multiple times!' },
-          { reviewer: 'Dana', stars: 5, text: 'Compact and powerful.' }
-        ]
-      },
-      {
-        name: 'Samsung Adaptive Fast Charger (Used)',
-        img: 'charger.png',
-        condition: 'Old',
-        price: '$19.99',
-        category: 'Charger',
-        description: 'Original Samsung fast charger. Used but fully functional. Compatible with most Samsung devices.',
-        rating: 3,
-        reviews: 76,
-        reviewList: [
-          { reviewer: 'Eve', stars: 3, text: 'Still works like new.' },
-          { reviewer: 'Frank', stars: 4, text: 'Good value for a used charger.' }
-        ]
-      },
-      {
-        name: 'Extendable Bluetooth Selfie Stick Tripod',
-        img: 'selfiestick.png',
-        condition: 'New',
-        price: '$9.99',
-        category: 'Selfie Sticks',
-        description: 'Lightweight, extendable selfie stick with Bluetooth remote and tripod mode. Great for group photos.',
-        rating: 4,
-        reviews: 54,
-        reviewList: [
-          { reviewer: 'Grace', stars: 4, text: 'Perfect for travel photos.' },
-          { reviewer: 'Henry', stars: 5, text: 'Easy to use and lightweight.' }
-        ]
-      },
-      {
-        name: 'Sony SRS-XB12 Extra Bass Speaker',
-        img: 'bspeaker.png',
-        condition: 'Old',
-        price: '$39.99',
-        category: 'Bluetooth Speaker',
-        description: 'Portable wireless speaker with extra bass and long battery life. Water-resistant and durable.',
-        rating: 4,
-        reviews: 210,
-        reviewList: [
-          { reviewer: 'Ivy', stars: 5, text: 'Amazing sound quality!' },
-          { reviewer: 'Jack', stars: 4, text: 'Battery lasts all day.' }
-        ]
-      },
-      {
-        name: 'Spigen Tempered Glass Screen Protector',
-        img: 'screenprotector.png',
-        condition: 'New',
-        price: '$7.99',
-        category: 'Screen Protector',
-        description: 'Premium tempered glass with 9H hardness. Easy installation and high touch sensitivity for your device.',
-        rating: 5,
-        reviews: 67,
-        reviewList: [
-          { reviewer: 'Kim', stars: 5, text: 'Crystal clear and easy to apply.' },
-          { reviewer: 'Leo', stars: 5, text: 'Saved my screen more than once.' }
-        ]
-      }
-    ];
-
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    
     document.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
       const productId = parseInt(urlParams.get('product'));
-      const product = products[productId - 1];
+      const product = products[productId];
 
       const productDetailContainer = document.getElementById('productDetail');
 
@@ -515,6 +512,7 @@
           </div>
           <div class="add-to-cart-controls">
             <input type="number" class="quantity-input" value="1" min="1">
+            <div class="error-message">Please enter a positive number</div>
             <button class="add-to-cart-btn">Add to Cart</button>
             <button class="chat-button" id="openChatBtn">
               <svg viewBox="0 0 24 24">
@@ -550,12 +548,13 @@
               <div class="form-group">
                 <label for="review-rating">Star Rating:</label>
                 <div class="star-rating-input">
-                  <input type="radio" id="star5" name="rating" value="5" required><label for="star5"></label>
+                  <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
                   <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
                   <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
                   <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
                   <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
                 </div>
+                <div class="rating-error">Please select a star rating</div>
               </div>
               <div class="form-group">
                 <label for="review-text">Your Review:</label>
@@ -580,42 +579,59 @@
             event.preventDefault(); // Prevent default button behavior
             
             const quantityInput = productDetailContainer.querySelector('.quantity-input');
+            const errorMessage = productDetailContainer.querySelector('.error-message');
             const quantity = parseInt(quantityInput.value, 10);
 
-            if (!isNaN(quantity) && quantity > 0) {
-              // Get existing cart from localStorage
-              let cart = JSON.parse(localStorage.getItem('cart')) || [];
-              
-              // Check if item already exists in cart
-              const existingItemIndex = cart.findIndex(item => item.name === product.name);
-              
-              if (existingItemIndex !== -1) {
-                // Update quantity if item exists
-                cart[existingItemIndex].quantity += quantity;
-              } else {
-                // Add new item if it doesn't exist
-                cart.push({
-                  name: product.name,
-                  price: product.price,
-                  img: product.img,
-                  quantity: quantity
-                });
-              }
-              
-              // Save updated cart to localStorage
-              localStorage.setItem('cart', JSON.stringify(cart));
-              
-              // Update cart counter
-              const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-              const cartCounter = document.getElementById('cartCounter');
-              if (cartCounter) {
-                cartCounter.textContent = totalItems;
-              }
+            if (isNaN(quantity) || quantity <= 0) {
+              errorMessage.classList.add('show');
+              return;
+            }
+
+            errorMessage.classList.remove('show');
+            
+            // Get existing cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if item already exists in cart
+            const existingItemIndex = cart.findIndex(item => item.name === product.name);
+            
+            if (existingItemIndex !== -1) {
+              // Update quantity if item exists
+              cart[existingItemIndex].quantity += quantity;
             } else {
-              console.warn('Invalid quantity entered.');
+              // Add new item if it doesn't exist
+              cart.push({
+                name: product.name,
+                price: product.price,
+                img: product.img,
+                quantity: quantity
+              });
+            }
+            
+            // Save updated cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update cart counter
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCounter = document.getElementById('cartCounter');
+            if (cartCounter) {
+              cartCounter.textContent = totalItems;
             }
           });
         }
+
+        // Add input validation for quantity
+        const quantityInput = productDetailContainer.querySelector('.quantity-input');
+        const errorMessage = productDetailContainer.querySelector('.error-message');
+        
+        quantityInput.addEventListener('input', function() {
+          const value = parseInt(this.value, 10);
+          if (isNaN(value) || value <= 0) {
+            errorMessage.classList.add('show');
+          } else {
+            errorMessage.classList.remove('show');
+          }
+        });
 
         // Initialize cart counter on page load
         const cartCounter = document.getElementById('cartCounter');
@@ -628,51 +644,115 @@
         // Display existing reviews
         const reviewsContainer = document.getElementById('userReviews');
         if (product.reviewList && product.reviewList.length > 0) {
-          product.reviewList.forEach(review => {
+          product.reviewList.forEach((review, index) => {
             const reviewElement = `
               <div class="review">
+                ${review.reviewer === 'John' ? `
+                <button class="delete-review-btn" data-review-index="${index}" title="Delete review">
+                  ✕
+                </button>
+                ` : ''}
                 <div class="reviewer">${review.reviewer}</div>
                 <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}</div>
                 <div class="review-text">${review.text}</div>
+                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
               </div>
             `;
             reviewsContainer.innerHTML += reviewElement;
           });
+          attachDeleteButtonListeners();
         } else {
           reviewsContainer.innerHTML = '<p>No reviews yet.</p>';
         }
 
         // Handle review submission
         const reviewForm = document.getElementById('reviewForm');
+        const ratingError = document.querySelector('.rating-error');
+        
+        // Add event listeners to star rating inputs
+        const starInputs = document.querySelectorAll('.star-rating-input input[type="radio"]');
+        starInputs.forEach(input => {
+          input.addEventListener('change', () => {
+            if (input.checked) {
+              ratingError.classList.remove('show');
+            }
+          });
+        });
+
         reviewForm.addEventListener('submit', function(event) {
           event.preventDefault();
           const rating = reviewForm.rating.value;
           const reviewText = reviewForm.reviewText.value;
           
+          // Validate star rating
+          if (!rating) {
+            ratingError.classList.add('show');
+            return;
+          }
+          
+          ratingError.classList.remove('show');
+          
           // Add new review
           const newReview = {
-            reviewer: 'John', // You might want to get this from user authentication
+            reviewer: 'John', 
             stars: parseInt(rating),
-            text: reviewText
+            text: reviewText,
+            date: new Date().toISOString()
           };
           
-          product.reviewList.push(newReview);
+          // Update product in localStorage
+          const products = JSON.parse(localStorage.getItem('products')) || [];
+          const urlParams = new URLSearchParams(window.location.search);
+          const productIndex = parseInt(urlParams.get('product'));
+          console.log(productIndex)
+          if (productIndex !== -1) {
+            // Initialize reviews array if it doesn't exist
+            if (!products[productIndex].reviewList) {
+              products[productIndex].reviewList = [];
+            }
+            
+            // Add the new review
+            products[productIndex].reviewList.push(newReview);
+            
+            // Update review count
+            products[productIndex].reviews = (products[productIndex].reviews || 0) + 1;
+            // Save back to localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+          }
 
           // Reset form
           reviewForm.reset();
           
           // Update reviews display
           reviewsContainer.innerHTML = ''; // Clear existing reviews
-          product.reviewList.forEach(review => {
+          products[productIndex].reviewList.forEach((review, reviewIndex) => {
             const reviewElement = `
               <div class="review">
+                ${review.reviewer === 'John' ? `
+                <button class="delete-review-btn" data-review-index="${reviewIndex}" title="Delete review">
+                  ✕
+                </button>
+                ` : ''}
                 <div class="reviewer">${review.reviewer}</div>
                 <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}</div>
                 <div class="review-text">${review.text}</div>
+                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
               </div>
             `;
             reviewsContainer.innerHTML += reviewElement;
           });
+
+          // Update the product rating display
+          const ratingDisplay = document.querySelector('.product-detail-rating');
+          if (ratingDisplay) {
+            ratingDisplay.innerHTML = `
+              <span class="stars">★★★★★</span>
+              <span>(${products[productIndex].reviewList.length} reviews)</span>
+            `;
+          }
+
+          // Add delete button event listeners
+          attachDeleteButtonListeners();
         });
 
         // Chat functionality
@@ -747,6 +827,57 @@
             handleSendMessage();
           }
         });
+
+        // Function to attach delete button listeners
+        function attachDeleteButtonListeners() {
+          document.querySelectorAll('.delete-review-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const reviewIndex = parseInt(this.dataset.reviewIndex);
+              if (confirm('Are you sure you want to delete this review?')) {
+                // Remove review from localStorage
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const urlParams = new URLSearchParams(window.location.search);
+                const productIndex = parseInt(urlParams.get('product'));
+                
+                products[productIndex].reviewList.splice(reviewIndex, 1);
+                products[productIndex].reviews = products[productIndex].reviewList.length;
+                localStorage.setItem('products', JSON.stringify(products));
+
+                // Update reviews display
+                const reviewsContainer = document.getElementById('userReviews');
+                reviewsContainer.innerHTML = ''; // Clear existing reviews
+                products[productIndex].reviewList.forEach((review, reviewIndex) => {
+                  const reviewElement = `
+                    <div class="review">
+                      ${review.reviewer === 'John' ? `
+                      <button class="delete-review-btn" data-review-index="${reviewIndex}" title="Delete review">
+                        ✕
+                      </button>
+                      ` : ''}
+                      <div class="reviewer">${review.reviewer}</div>
+                      <div class="review-stars">${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}</div>
+                      <div class="review-text">${review.text}</div>
+                      <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+                    </div>
+                  `;
+                  reviewsContainer.innerHTML += reviewElement;
+                });
+
+                // Update the product rating display
+                const ratingDisplay = document.querySelector('.product-detail-rating');
+                if (ratingDisplay) {
+                  ratingDisplay.innerHTML = `
+                    <span class="stars">★★★★★</span>
+                    <span>(${products[productIndex].reviewList.length} reviews)</span>
+                  `;
+                }
+
+                // Reattach event listeners to new delete buttons
+                attachDeleteButtonListeners();
+              }
+            });
+          });
+        }
 
       } else {
         productDetailContainer.innerHTML = '<p>Product not found.</p>';

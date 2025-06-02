@@ -215,8 +215,7 @@
 
       // Calculate total price
       const totalPrice = cart.reduce((sum, item) => {
-        const price = parseFloat(item.price.replace('$', ''));
-        return sum + (price * item.quantity);
+        return sum + (item.price * item.quantity);
       }, 0);
 
       // Generate cart items HTML
@@ -290,7 +289,34 @@
     }
 
     function checkout() {
-      window.location.href = 'checkout.html';
+      // Create a new order from the current cart
+      const order = {
+        orderNumber: `ORD-${Date.now()}`,
+        date: new Date().toISOString(),
+        status: 'processing',
+        items: cart.map(item => ({
+          name: item.name,
+          price: parseFloat(item.price.replace('$', '')),
+          quantity: item.quantity,
+          image: item.img
+        })),
+        total: cart.reduce((sum, item) => {
+          const price = parseFloat(item.price.replace('$', ''));
+          return sum + (price * item.quantity);
+        }, 0)
+      };
+
+      // Get existing orders or initialize empty array
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      // Clear the cart
+      cart = [];
+      saveCart();
+
+      // Redirect to orders page
+      window.location.href = 'orders.html';
     }
 
     // Initialize cart display
