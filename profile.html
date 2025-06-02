@@ -466,10 +466,36 @@
         const products = JSON.parse(localStorage.getItem('products')) || [];
         const productsGrid = document.getElementById('productsGrid');
         const totalProducts = document.getElementById('totalProducts');
+        const totalReviews = document.getElementById('totalReviews');
+        const avgRating = document.getElementById('avgRating');
 
         // Filter products to only show John's products
         const johnsProducts = products.filter(product => product.seller_name === 'John');
+        
+        // Calculate total products
         totalProducts.textContent = johnsProducts.length;
+
+        // Calculate total reviews and average rating
+        let totalReviewCount = 0;
+        let totalStars = 0;
+        let totalReviewsCount = 0;
+
+        johnsProducts.forEach(product => {
+          if (product.reviewList && product.reviewList.length > 0) {
+            totalReviewCount += product.reviewList.length;
+            product.reviewList.forEach(review => {
+              totalStars += review.stars;
+              totalReviewsCount++;
+            });
+          }
+        });
+
+        // Update review count
+        totalReviews.textContent = totalReviewCount;
+
+        // Calculate and update average rating
+        const averageRating = totalReviewsCount > 0 ? (totalStars / totalReviewsCount).toFixed(1) : '0.0';
+        avgRating.textContent = averageRating;
 
         if (johnsProducts.length === 0) {
           productsGrid.innerHTML = `
@@ -493,7 +519,7 @@
                 <div class="product-title">${product.name}</div>
                 <div class="product-price">$${product.price.toFixed(2)}</div>
                 <div class="product-meta">
-                  <span>${product.reviews || 0} reviews</span>
+                  <span>${product.reviewList ? product.reviewList.length : 0} reviews</span>
                 </div>
               </div>
             </a>
@@ -514,31 +540,25 @@
       function loadReviews() {
         const products = JSON.parse(localStorage.getItem('products')) || [];
         const reviewsList = document.getElementById('reviewsList');
-        const totalReviews = document.getElementById('totalReviews');
-        const avgRating = document.getElementById('avgRating');
 
-        // Sample user IDs for demonstration
-        const userIds = ['user123', 'tech_lover', 'gadget_fan', 'mobile_enthusiast', 'accessory_collector'];
+        // Filter products to only show John's products
+        const johnsProducts = products.filter(product => product.seller_name === 'John');
 
-        // Simulate reviews (in a real app, these would come from a database)
-        const reviews = products.flatMap(product => {
-          const numReviews = 3;
-          return Array(numReviews).fill(null).map((_, index) => ({
-            productName: product.name,
-            userId: userIds[Math.floor(Math.random() * userIds.length)],
-            rating: 5,
-            content: `Great product! Very satisfied with the quality and service.`,
-            date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
-          }));
+        // Get all reviews from John's products
+        const allReviews = johnsProducts.flatMap(product => {
+          if (product.reviewList && product.reviewList.length > 0) {
+            return product.reviewList.map(review => ({
+              productName: product.name,
+              userId: review.reviewer,
+              rating: review.stars,
+              content: review.text,
+              date: review.date || new Date().toISOString()
+            }));
+          }
+          return [];
         });
 
-        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-        const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
-
-        totalReviews.textContent = 0;
-        avgRating.textContent = 0;
-
-        if (reviews.length === 0) {
+        if (allReviews.length === 0) {
           reviewsList.innerHTML = `
             <div class="empty-state">
               <i class="fa-solid fa-star"></i>
@@ -548,7 +568,10 @@
           return;
         }
 
-        reviewsList.innerHTML = reviews.map(review => `
+        // Sort reviews by date (newest first)
+        allReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        reviewsList.innerHTML = allReviews.map(review => `
           <div class="review-card">
             <div class="review-header">
               <div>

@@ -130,25 +130,23 @@ let averageRating = 0;
         // Handle 'Add to Cart' button click
         const addToCartButton = productDetailContainer.querySelector('.add-to-cart-btn');
         if (addToCartButton) {
-          addToCartButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default button behavior
-            
-            // Get existing cart from localStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          addToCartButton.addEventListener('click', function() {
+            const quantity = parseInt(quantitySelect.textContent);
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
             
             // Check if item already exists in cart
             const existingItemIndex = cart.findIndex(item => item.name === product.name);
             
             if (existingItemIndex !== -1) {
               // Update quantity if item exists
-              cart[existingItemIndex].quantity += selectedQuantity;
+              cart[existingItemIndex].quantity += quantity;
             } else {
               // Add new item if it doesn't exist
               cart.push({
                 name: product.name,
                 price: product.price,
                 img: product.img,
-                quantity: selectedQuantity
+                quantity: quantity
               });
             }
             
@@ -157,24 +155,25 @@ let averageRating = 0;
             
             // Update cart counter
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const cartCounter = document.getElementById('cartCounter');
-            if (cartCounter) {
-              cartCounter.textContent = totalItems;
-            }
+            document.getElementById('cartCounter').textContent = totalItems;
 
-            // Show success message
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = `${product.name} added to cart!`;
-            document.body.appendChild(toast);
+            // Show toast notification
+            const toast = document.getElementById('toast');
+            toast.textContent = `${quantity} ${product.name} added to cart!`;
             toast.style.display = 'block';
             
+            // Hide toast after 3 seconds
             setTimeout(() => {
               toast.style.animation = 'fadeOut 0.3s ease-out';
               setTimeout(() => {
-                toast.remove();
+                toast.style.display = 'none';
+                toast.style.animation = 'slideIn 0.3s ease-out';
               }, 300);
             }, 3000);
+
+            // Reset quantity to 1
+            quantitySelect.textContent = "1";
+            selectedQuantity = 1;
           });
         }
 

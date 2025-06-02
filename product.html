@@ -520,9 +520,49 @@
       font-size: 0.875rem;
       margin-top: 4px;
     }
+
+    /* Toast notification styles */
+    #toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #28a745;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+      }
+      to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+      to {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
+  <div id="toast"></div>
   <nav class="navbar">
     <div class="navbar-left mb-3 w-20">
       <a href="./index.html" class="site-title">

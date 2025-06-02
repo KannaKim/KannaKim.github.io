@@ -77,7 +77,7 @@ let productData = [
     category: 'Charger',
     price: 19.99,
     stars: 3,
-    condition: 'Old',
+    condition: 'Used',
     element: null,
     description: 'Original Samsung fast charger. Used but fully functional. Compatible with most Samsung devices.',
     reviews: 2,
@@ -111,7 +111,7 @@ let productData = [
     category: 'Bluetooth Speaker',
     price: 39.99,
     stars: 4,
-    condition: 'Old',
+    condition: 'Used',
     element: null,
     description: 'Portable wireless speaker with extra bass and long battery life. Water-resistant and durable.',
     reviews: 2,
@@ -139,7 +139,10 @@ let productData = [
     img: 'screenprotector.png'
   }
 ];
-if (!localStorage.getItem('products')) {
+if (!localStorage.getItem('item-counter')) {
+  localStorage.setItem('item-counter', 6);
+}
+if (!localStorage.getItem('products')) {  // then probably first time launching the app, probably..
   localStorage.setItem('products', JSON.stringify(productData));
 }
 else{
