@@ -211,24 +211,22 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="navbar-left mb-3 w-20">
-      <a href="./index.html" class="site-title">
+    <div class="navbar-left">
+      <a href="./index.html" class="site-title mb-4 mr-10 w-20">
         <img src="logo.png" alt="logo" class="logo" width="100%">
       </a>
+      <a class="navbar-link" href="profile.html">
+        <span class="text-lg">Profile</span>
+      </a>
     </div>
-    <a class="user-profile" href="profile.html">
-      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-        <i class="fa-solid fa-user text-gray-500 text-2xl"></i>
-      </div>
-    </a>
-    <div class="navbar-center invisible">
+    <div class="navbar-center">
       <input type="text" placeholder="Search accessories...">
     </div>
     <div class="navbar-right">
       <a href="upload-product.html" class="navbar-link">
-        <i class="fa-solid fa-plus"></i>
+        <span>Upload</span>
       </a>
-      <a href="cart.html" class="navbar-link">
+      <a href="cart.html" class="navbar-link navbar-link-highlight">
         Carts 
         <span id="cartCounter" class="cart-counter">0</span>
       </a>
