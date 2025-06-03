@@ -272,6 +272,20 @@ let averageRating = 0;
           // Reset form
           reviewForm.reset();
           
+          // Show success alert
+          const toast = document.getElementById('toast');
+          toast.textContent = 'Review submitted successfully!';
+          toast.style.display = 'block';
+          
+          // Hide toast after 3 seconds
+          setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {
+              toast.style.display = 'none';
+              toast.style.animation = 'slideIn 0.3s ease-out';
+            }, 300);
+          }, 3000);
+          
           // Update reviews display
           reviewsContainer.innerHTML = ''; // Clear existing reviews
           console.log("productIndex",productIndex)
