@@ -210,8 +210,33 @@ function filterProducts() {
   const query = searchInput.value.trim().toLowerCase();
   const category = filterForm.category.value;
   const condition = filterForm.condition.value;
-  const minPrice = parseFloat(filterForm.minPrice.value) || 0;
-  const maxPrice = parseFloat(filterForm.maxPrice.value) || Infinity;
+  
+  // Get price values and validate them
+  const minPriceInput = filterForm.minPrice;
+  const maxPriceInput = filterForm.maxPrice;
+  let minPrice = parseFloat(minPriceInput.value) || 0;
+  let maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+
+  // Validate price range
+  if (minPriceInput.value && maxPriceInput.value) {
+    if (minPrice > maxPrice) {
+      // If min is greater than max, swap them
+      [minPrice, maxPrice] = [maxPrice, minPrice];
+      minPriceInput.value = minPrice;
+      maxPriceInput.value = maxPrice;
+    }
+  }
+
+  // Ensure non-negative values
+  if (minPrice < 0) {
+    minPrice = 0;
+    minPriceInput.value = 0;
+  }
+  if (maxPrice < 0) {
+    maxPrice = 0;
+    maxPriceInput.value = 0;
+  }
+
   const checkedStars = Array.from(filterForm.querySelectorAll('input[name="star"]:checked')).map(cb => parseInt(cb.value, 10));
 
   productData.forEach(product => {
