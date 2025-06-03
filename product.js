@@ -17,89 +17,98 @@ let averageRating = 0;
 
       if (product) {
         const productHtml = `
-          <div class="product-detail-header">
-            <img src="${product.img}" alt="${product.name}">
-            <div class="product-detail-info">
-              <div class="product-detail-title">${product.name}</div>
-              <div class="product-detail-meta">${product.category}</div>
-              <div class="product-detail-price">$${product.price.toFixed(2)}</div>
-              <div class="product-detail-rating">
-                <span class="stars">${'★'.repeat(averageRating)}${'☆'.repeat(5 - averageRating)}</span>
-                <span>(${product.reviews} reviews)</span>
-              </div>
-              <div class="product-detail-desc">${product.description}</div>
-              <div class="product-meta" style="margin-top: 10px; text-align: left;">
-                 Condition: <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
-              </div>
-            </div>
-          </div>
-          <div class="add-to-cart-controls-container flex align-middle mt-10">
-            <div class="add-to-cart-controls">
-              <div class="quantity-select-container">
-                <div class="quantity-select" id="quantitySelect">1</div>
-                <div class="quantity-options" id="quantityOptions">
-                  ${Array.from({length: 30}, (_, i) => 
-                    `<div class="quantity-option" data-value="${i + 1}">${i + 1}</div>`
-                  ).join('')}
+          <div class="product-content">
+            <div class="product-detail-header">
+              <img src="${product.img}" alt="${product.name}">
+              <div class="product-detail-info">
+                <div class="product-detail-title">${product.name}</div>
+                <div class="product-detail-meta">${product.category}</div>
+                <div class="product-detail-price">$${product.price.toFixed(2)}</div>
+                <div class="product-detail-rating">
+                  <span class="stars">${'★'.repeat(averageRating)}${'☆'.repeat(5 - averageRating)}</span>
+                  <span>(${product.reviews} reviews)</span>
+                </div>
+                <div class="product-detail-desc">${product.description}</div>
+                <div class="product-meta" style="margin-top: 10px; text-align: left;">
+                   Condition: <span class="condition-badge ${product.condition.toLowerCase()}">${product.condition}</span>
                 </div>
               </div>
-              <button class="add-to-cart-btn">Add to Cart</button>
             </div>
+            <div class="add-to-cart-controls-container flex align-middle mt-10">
+              <div class="add-to-cart-controls">
+                <div class="quantity-select-container">
+                  <div class="quantity-select" id="quantitySelect">1</div>
+                  <div class="quantity-options" id="quantityOptions">
+                    ${Array.from({length: 30}, (_, i) => 
+                      `<div class="quantity-option" data-value="${i + 1}">${i + 1}</div>`
+                    ).join('')}
+                  </div>
+                </div>
+                <button class="add-to-cart-btn">Add to Cart</button>
+              </div>
 
-            <button class="chat-button ml-auto" id="openChatBtn">
-              Contact Seller
-            </button>
-          </div>
-          <div class="chat-overlay" id="chatOverlay">
-            <section class="chat-section" id="chatSection">
-              <div class="chat-header">
-                <h3>Chat with Seller</h3>
-                <button class="close-chat-btn" id="closeChatBtn">&times;</button>
-              </div>
-              <div class="chat-messages" id="chatMessages">
-                <div class="message seller">
-                  Hello! I'm the seller. How can I help you with this product?
+              <button class="chat-button ml-auto" id="openChatBtn">
+                Contact Seller
+              </button>
+            </div>
+            <div class="chat-overlay" id="chatOverlay">
+              <section class="chat-section" id="chatSection">
+                <div class="chat-header">
+                  <h3>Chat with Seller</h3>
+                  <button class="close-chat-btn" id="closeChatBtn">&times;</button>
                 </div>
-              </div>
-              <div class="message-input-container">
-                <input type="text" class="message-input" id="messageInput" placeholder="Type your message...">
-                <button class="send-message-btn" id="sendMessageBtn">
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                  </svg>
-                </button>
+                <div class="chat-messages" id="chatMessages">
+                  <div class="message seller">
+                    Hello! I'm the seller. How can I help you with this product?
+                  </div>
+                </div>
+                <div class="message-input-container">
+                  <input type="text" class="message-input" id="messageInput" placeholder="Type your message...">
+                  <button class="send-message-btn" id="sendMessageBtn">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                  </button>
+                </div>
+              </section>
+            </div>
+            <section class="add-review-section">
+              <h3>Leave a review</h3>
+              <form id="reviewForm">
+                <div class="form-group">
+                  <label for="review-rating">Star Rating:</label>
+                  <div class="star-rating-input">
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+                  </div>
+                  <div class="rating-error">Please select a star rating</div>
+                </div>
+                <div class="form-group">
+                  <label for="review-text">Your Review:</label>
+                  <textarea id="review-text" name="reviewText" rows="4" required></textarea>
+                </div>
+                <button type="submit">Submit Review</button>
+              </form>
+            </section>
+            <section class="reviews-section">
+              <h3>User Reviews</h3>
+              <div id="userReviews">
+                
               </div>
             </section>
           </div>
-          <section class="add-review-section">
-            <h3>Leave a review</h3>
-            <form id="reviewForm">
-              <div class="form-group">
-                <label for="review-rating">Star Rating:</label>
-                <div class="star-rating-input">
-                  <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
-                  <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
-                  <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
-                  <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
-                  <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
-                </div>
-                <div class="rating-error">Please select a star rating</div>
-              </div>
-              <div class="form-group">
-                <label for="review-text">Your Review:</label>
-                <textarea id="review-text" name="reviewText" rows="4" required></textarea>
-              </div>
-              <button type="submit">Submit Review</button>
-            </form>
-          </section>
-          <section class="reviews-section">
-            <h3>User Reviews</h3>
-            <div id="userReviews">
-              
-            </div>
-          </section>
         `;
-        productDetailContainer.innerHTML = productHtml;
+        // Create a new div for the product content
+        const productContent = document.createElement('div');
+        productContent.className = 'product-content';
+        productContent.innerHTML = productHtml;
+        
+        // Clear the container and add the back link and product content
+        productDetailContainer.innerHTML = '<a href="index.html" class="back-link">← Go Back to Shopping</a>';
+        productDetailContainer.appendChild(productContent);
 
         // Handle quantity selection
         const quantitySelect = productDetailContainer.querySelector('#quantitySelect');

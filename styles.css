@@ -195,6 +195,7 @@ body {
 .product-link {
   text-decoration: none;
   color: inherit;
+  width: 100%;
 }
 .product-link:focus .product-card, .product-link:hover .product-card {
   box-shadow: 0 8px 32px rgba(0,123,255,0.13);
@@ -208,7 +209,7 @@ body {
   height: 100%;
   background: #fff;
   box-shadow: 2px 0 16px rgba(0,0,0,0.08);
-  z-index: 2000;
+  z-index: 1;
   transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(.4,0,.2,1);
   padding: 24px 20px 20px 20px;

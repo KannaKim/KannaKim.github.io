@@ -476,7 +476,6 @@ document.addEventListener('click', function(event) {
       const toast = document.getElementById('toast');
       toast.textContent = `${quantity} ${productTitle} added to cart!`;
       toast.style.display = 'block';
-      
       // Hide toast after 3 seconds
       setTimeout(() => {
         toast.style.animation = 'fadeOut 0.3s ease-out';
